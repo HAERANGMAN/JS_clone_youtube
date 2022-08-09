@@ -6,6 +6,12 @@ const PORT = 4000;
 
 const app = express();
 
+/////////////////////////////// request, response개념 ////////////////////////////////
+// 브라우저가 get request하면("/"url이오면) 함수를 실행
+const handleHome = () => console.log("Somebody is trying to go home.");
+
+app.get("/", handleHome);
+
 const handleListening = () =>
   console.log(`✅ Server listenting on port http://localhost:${PORT} 🚀`);
 

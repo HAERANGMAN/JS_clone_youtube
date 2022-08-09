@@ -59,3 +59,5 @@ express().listen(4000, () =>
 ```
 
 - npm run dev할경우 서버가 열려있는것을 확인, 끄면 닫힘
+
+## request, response
