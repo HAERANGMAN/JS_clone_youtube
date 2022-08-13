@@ -117,3 +117,40 @@ const home = (req, res, next) => {
 app.use(methodLogger, routerLogger);
 app.get("/", home);
 ```
+
+## Spilt Module
+> - 파이썬과 다른점은 `export`를 해줘야함!  
+> - clean code를 위해서 파일 분리!
+```
+<module.js>
+
+export const {변수명};
+export default {함수명};
+```
+```
+<main.js>
+
+import {변수명1, 변수명2} from "{상대경로}"
+import 디폴트니까 아무이름 from "{상대경로}"
+```
+
+## Router
+> 공통부분을 기반으로 url을 설정하는 방법
+- "/"에 바로연결되는 글로벌 라우터 /join, /login 등
+- /users/edit, /users/delete 등 users라우터
+- /videos/watch, /videos/edit 등 videos라우터
+
+> 변수(id)를 추가할수있음
+- "/:{변수명}/~~~" 을 통해서 사용
+- request.params에서는 {변수명: 입력된id}로 확인가능
+```
+//변수가 아래로 내려가야함
+userRouter.get("/remove", remove);
+userRouter.get("/:id", see); 
+```
+`주의`
+```
+//이렇게 작성될경우 remove가 id로 들어가면 밑의 컨트롤러는 작동이안됨
+userRouter.get("/:id", see); 
+userRouter.get("/remove", remove);
+```
