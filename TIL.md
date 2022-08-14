@@ -51,6 +51,8 @@ Utilities: Nodemon, Language APIs: Node클릭후 설치
 
 >`본격적인수업`  
 ## 서버를 열어보자
+> 작동되는 것은 packge.json에서의 script이므로  
+> 현재의 node.JS의 작동디렉토리는 최상위폴더임
 ```
 import express from "express";
 express().listen(4000, () => console.log(`✅ Server listenting on port http://localhost:4000 🚀`));
@@ -154,3 +156,43 @@ userRouter.get("/:id", see);
 userRouter.get("/:id", see); 
 userRouter.get("/remove", remove);
 ```
+
+
+## pug(Return rep.send)
+html을 편하게 사용하기위해 씀
+> 1 Pug를 사용하기위해서 `npm i pug`  
+> 2 app.use() 앞에 set으로 설정  
+> 3 res.render('home') //controller에서!
+```
+app.set("view engine", "pug")
+app.set("views", process.cwd() + "/src/views"); //package.script 기본경로 재설정
+app.use~~~
+~~~~~~~~~~
+```
+
+## Pug for Extend
+> 중복을 편하게 쓰기위해서 3가지방법  
+> partials, block, #{}
+```
+pug 페이지 작성후
+~~~~~~~~~~~~~~~~~
+include partials/footer.pug
+```
+`base.pug`
+```
+block {이름}
+or
+head
+    title 안녕하세요! #{name}
+```
+
+`any.pug`
+```
+block {이름}
+    {넣을 tag} {내용}
+or
+res.render('home', {name : '내용'}) //controller에서!
+```
+
+## MVP.css
+> middleware로서 꾸며줌
