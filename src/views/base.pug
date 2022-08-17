@@ -3,6 +3,24 @@ html(lang="ko")
         title #{pageTitle} | Youtube_Clone
         link(rel="stylesheet" href="https://unpkg.com/mvp.css")
     body
+        header 
+            h1=pageTitle
+            nav
+                ul  
+                    li
+                        a(href="/videos/upload") Upload Video!
+            //- if fakeUser.loggedIn
+            //-     small Hello #{fakeUser.username}
+            //- nav
+
+            //-     ul
+            //-         if fakeUser.loggedIn
+            //-             li 
+            //-                 a(href="/logout") Log out
+            //-         else
+            //-             li 
+            //-                 a(href="/login") Login
+            
         main
             block content
-    include partials/footer.pug
+    include partials/footer

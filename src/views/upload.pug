@@ -1,0 +1,8 @@
+extends base.pug
+
+
+block content
+    h1=pageTitle
+    form(method="POST") 
+        input(type="text", placeholder="Title", required, name='title')
+        input(type="submit", value="Upload Video!")

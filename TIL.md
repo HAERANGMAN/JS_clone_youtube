@@ -184,6 +184,9 @@ block {이름}
 or
 head
     title 안녕하세요! #{name}
+or
+header
+    h1=page
 ```
 
 `any.pug`
@@ -196,3 +199,64 @@ res.render('home', {name : '내용'}) //controller에서!
 
 ## MVP.css
 > middleware로서 꾸며줌
+
+
+## Iteration: each ---- in ----
+> for i in list: 와 동일함
+
+## mixins
+> partials처럼 블록으로 사용
+```
+mixin video(info)
+    div
+        h4=info.title
+        ul
+            li #{info.rating}/5.
+            li #{info.comments} comments.
+            li Posted #{info.createdAt}.
+            li #{info.views} views.
+```
+> +를 붙여서 사용(for x in y와 같이 사용된 사례임)
+```
+include mixins/video
+
+each potato in videos
+            +video(potato)
+```
+
+## relative, absoulte URL
+> 'edit'와 '/edit'의 차이
+```
+a(href="/video/edit")--->localhost:4000/video/edit
+a(href="video/edit")--->localhost:4000/videos/video/edit
+a(href=`${video.id}/edit`)--->localhost:4000/videos/1/edit
+```
+
+## Ternary operator
+> 1줄 if문
+```
+h3 #{video.views} #{video.views === 1 ? "view" : "views"}
+h3 #{video.views === 1 ? `${video.views} view` : `${video.views} views` }
+```
+
+
+## Method GET, POST
+`GET`
+> 이 경우 localhost:4000/save-changes?title=Third+Video가 주소로 나옴
+> 공개적으로 action과 name, value가 전송된것...
+> 주로 검색창에서 많이사용
+```
+form(action="/save-changes", method="GET")
+        input(name="title", placeholder="Video Title", value=video.title, required)
+        input(value="Save",type="submit")
+```
+`POST`
+> database를 CRUD하는경우
+> 파일이나 아이디 비밀번호를 보낼때 주소 변화없이 그대로 보내줌
+```
+form(method="POST")
+        input(name="title", placeholder="Video Title", value=video.title, required)
+        input(value="Save",type="submit")
+```
+
+## Push = 파이썬의 append
