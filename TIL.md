@@ -240,7 +240,7 @@ h3 #{video.views === 1 ? `${video.views} view` : `${video.views} views` }
 ```
 
 
-## Method GET, POST
+## (중요) Method GET, POST
 `GET`
 > 이 경우 localhost:4000/save-changes?title=Third+Video가 주소로 나옴
 > 공개적으로 action과 name, value가 전송된것...
@@ -250,6 +250,8 @@ form(action="/save-changes", method="GET")
         input(name="title", placeholder="Video Title", value=video.title, required)
         input(value="Save",type="submit")
 ```
+> 이 경우 res.query.title로 가져와야 한다
+
 `POST`
 > database를 CRUD하는경우
 > 파일이나 아이디 비밀번호를 보낼때 주소 변화없이 그대로 보내줌
@@ -258,5 +260,227 @@ form(method="POST")
         input(name="title", placeholder="Video Title", value=video.title, required)
         input(value="Save",type="submit")
 ```
+> 이 경우 res.body.title로 가져와야 한다
 
-## Push = 파이썬의 append
+
+## Push
+> 파이썬의 append역할
+```
+let videos = []
+videos.push(newVideo);
+```
+
+
+## mongoose
+> 몽고DB와 Express.js 웹 애플리케이션 프레임워크 간 연결을 생성하는 자바스크립트 객체 지향 프로그래밍 라이브러리이다
+
+mongod: MongoDB 시스템의 기본 데몬 프로세서 (서버와 같은 느낌)
+mongosh: MongoDB에 대한 쉘 인터페이스 (클라이언트 같은 느낌)
+
+그래서 mongod로 서버를 키고 -> mongo로 인터페이스를 실행하여 mongoDB와 소통한다
+
+
+## Models
+> noSQL의 문제인 유효성검증을 위해 데이터의 형식을 정해주는 카테고리
+> https://mongoosejs.com/docs/schematypes.html
+```
+import mongoose from "mongoose";
+
+const videoSchema = new mongoose.Schema({
+        title: { type: String, required: true },
+        description: { type: String, required: true },
+        createdAt: { type: Date, required: true, default: Date.now() },
+        hashtags: [{ type: String }],
+        meta: {
+          views: { type: Number, default: 0, required: true },
+          rating: { type: Number, default: 0, required: true },
+        },
+      });
+            
+const modelVideo = mongoose.model("Video", videoSchema);
+
+export default modelVideo;
+```
+> type, required, default 가능, 그리고 [리스트]로도 넣음
+
+
+## mongo callback explanation
+video.find({search terms}, ) // search terms가 비었을경우 모든형식
+
+
+## callback vs promise
+> 순서의 차이, 직관의 차이가 엄청남
+
+`callback`
+```
+console.log("start")
+Video.find({}, (error, videos) => {
+  return res.render("home", { pageTitle: "Home", videos });
+});
+console.log("finished")
+```
+> 위의 실행순서는 start -> finished -> Video의순서
+> 순차대로 실행되었다가 Video에서 데이터가 올때까지 대기함
+> 직관적이지 않고 현재 어디에서 실행중인지 모름
+
+> await는 func안에서 사용되기 때문에
+> async를 적어줘서 함수안에 쓰이도록 만들어줌
+
+`promise`
+```
+export const home = async (req, res) => {  
+  try{
+    const videos = await Video.find({});
+    return res.render("home", { pageTitle: "Home", videos });
+  } catch {
+    return res.render("server-error");
+  };
+};
+```
+> await를 통해 Video가 실행될때까지 계속 기다리면서 작동한후 return
+> 안되면 catch 작동함
+
+
+## Express와 function.return
+> Express에서 가장 중요한 기능은 res.render를 통해서 렌더링을 하는것임
+```
+export const home = async (req, res) => {  
+  const potato = await modelVideo.find({});
+  return res.render("home", {pageTitle: "Home", videos});
+};
+```
+`return`은 단순히 함수를 종료시키는 기능일뿐임
+하지만 실수(렌더를 2번하거나 등)를 줄이기 위해 함수를 종료시켜버리는것
+```
+export const watch = async (req, res) => {
+  const { id } = req.params; //ES6문법
+  const video = await modelVideo.findById(id);
+  if (!video) {
+    return res.render("404", { pageTitle: "Video not found." });
+  }
+  return res.render("watch", { pageTitle: video.title, video });
+};
+```
+> 만약 여기서 404에 return이 없다면 if에서 실행되고 끝나는 것이 아니라
+> if아래 render.watch 끝줄까지 실행되었을 것임
+
+
+
+## MongoDB실행후 확인
+> cmd에서 `mongosh`로 실행
+> `show dbs`  
+> `use {DB명}`
+> `show collections`하면 const modelVideo = mongoose.model("Video", videoSchema); //(dbname, 형식) dbname의 document가 나옴  
+
+`Database > Collection > Document > {key:value} 순`  
+`Database`
+- Database생성 : use DATABASE_NAME 
+- 사용 중인 DB 확인 : db
+- DB리스트 확인 : show dbs(확인하려면 최소 한개의 document를 추가해야 함)
+- Database제거 : db.dropDatabase() → 제거하고 싶은 데이터베이스를 선택 후, 삭제
+
+`Collection`
+- Collection 확인 : show collections
+- Collection 삭제 : db.COLLECTION_NAME.drop()
+
+
+## Model의 Update
+> https://mongoosejs.com/docs/api#model_Model
+
+> 참고 : exists({ 원하는key : value})로 검색가능  
+  
+`수정방법 1`
+```
+const video = await modelVideo.findById(id);
+// exists({ 원하는property : value})로 검색가능, id는 id만
+if (!video) {
+  return res.render("404", { pageTitle: "Video not found." });
+}
+video.title = title;
+video.description = description;
+video.hashtags = hashtags
+  .split(",")
+  .map((word) => (word.startsWith("#") ? word : `#${word}`)); // #으로 시작하면 전자 아니면 후자
+await video.save();
+```
+
+`수정방법 2`
+```
+const video = await modelVideo.exists({ _id: id });
+// exists({ 원하는property : value})로 검색가능, id는 id만
+if (!video) {
+  return res.render("404", { pageTitle: "Video not found." });
+}
+await Video.findByIdAndUpdate(id, {
+  title,
+  description,
+  hashtags: hashtags
+    .split(",")
+    .map((word) => (word.startsWith("#") ? word : `#${word}`)),
+});
+```
+
+## Model의 Middleware처리(3가지)
+> https://mongoosejs.com/docs/middleware.html  
+> mongoose.model()로 저장되기전에 처리해야함  
+> `this` : 저장하고자 하는 document
+
+`해시태그처리 방법1(middleware로 처리)`
+```
+videoSchema.pre("save", async function () {
+  this.hashtags = this.hashtags[0]
+    .split(",")
+    .map((word) => (word.startsWith("#") ? word : `#${word}`));
+});
+
+const modelVideo = mongoose.model("Video", videoSchema);
+```
+
+`해시태그처리 방법2(변수로 처리)`
+```
+export const formatHashtags = (potato) => potato.split(",").map((tomato)=>(tomato.startsWith("#") ? word : `#${word}`))
+```
+
+`해시태그처리 방법3(Static Way)`
+```
+videoSchema.static("formatHashtags", function (hashtags) {
+  return hashtags
+    .split(",")
+    .map((word) => (word.startsWith("#") ? word : `#${word}`));
+});
+
+const modelVideo = mongoose.model("Video", videoSchema);
+```
+
+## 백데이터 오름차순으로 보이기
+```
+export const home = async (req, res) => {  
+  const potato = await modelVideo.find({}).sort({ createdAt: "desc" });
+  const videos = potato;
+  return res.render("home", {pageTitle: "Home", videos});
+};
+```
+
+## 정규식 검색(regex operator)
+> MongoDB에서 지원해주는것
+```
+export const search = async (req, res) => {
+  const { keyword } = req.query;
+  let videos = [];
+  if (keyword) {
+    videos = await modelVideo.find({
+      title: {
+        $regex: new RegExp(`${keyword}$`, "i"),
+      },
+    });
+  }
+  return res.render("search", { pageTitle: "Search", videos });
+};
+```
+여기에서 `let videos = [];`는 if가 실행안될경우 return에서 videos의 변수선언이 안되어 오류가 나기때문에 공란으로 선언한번 해준것임. if가 True라면 공란이 아니라 업데이트 될것임
+
+
+
+
+
+크게 템플릿, 컨트롤러, 라우터
