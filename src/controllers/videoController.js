@@ -54,7 +54,7 @@ export const getEdit = async (req, res) => {
   // const video = videos[id - 1];
   const video = await modelVideo.findById(id);
   if (!video) {
-    return res.render("404", { pageTitle: "Video not found." });
+    return res.status(404).render("404", { pageTitle: "Video not found." });
   }
   return res.render("edit", { pageTitle: `Edit: ${video.title}`, video }); 
   //{ pageTitle: `Editing: ${video.title}!`, video }
@@ -69,7 +69,7 @@ export const postEdit = async (req, res) => {
   const video = await modelVideo.exists({ _id: id });
   // exists({ 원하는property : value})로 검색가능, id는 id만
   if (!video) {
-    return res.render("404", { pageTitle: "Video not found." });
+    return res.status(404).render("404", { pageTitle: "Video not found." });
   }
   // video.title = title;
   // video.description = description;
@@ -103,7 +103,7 @@ export const postUpload = async (req, res) => {
     });
     return res.redirect("/");
   } catch (error) {
-    return res.render("upload", {
+    return res.status(400).render("upload", {
       pageTitle: "Upload Video",
       errorMessage: error._message, //퍼그에 errorMessage를 던져줌
     });

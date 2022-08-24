@@ -501,9 +501,20 @@ userSchema.pre("save", async function () {
 
 
 ## DB-중복피하기
+> 아래의 exists를 활용, 2개를 동시에 쓰기위해 $or문법활용
+> 근데 이경우에는 그냥 2개 개별로 쓰는게 나을듯
+```
+(userController.js)
+
+const exists = await modelUser.exists({ $or: [{ username }, { email }] });
+```
 
 
-
+## 브라우저에 상태전송
+> 오류가 날 상황일 경우, 렌더시 상태도 같이 전송해준다
+```
+return res.status(404).render("404", { pageTitle: "Video not found." });
+```
 
 
 
