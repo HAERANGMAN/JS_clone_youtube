@@ -92,6 +92,7 @@ export const postEdit = async (req, res) => {
 export const getUpload = (req, res) => {
   return res.render("upload", { pageTitle: `Upload!`});
 }
+
 export const postUpload = async (req, res) => {
   const { title, description, hashtags } = req.body;
   try {
@@ -148,7 +149,7 @@ export const search = async (req, res) => {
   if (keyword) {
     videos = await modelVideo.find({
       title: {
-        $regex: new RegExp(`${keyword}$`, "i"),
+        $regex: new RegExp(`${keyword}`, "i"),
       },
     });
   }
