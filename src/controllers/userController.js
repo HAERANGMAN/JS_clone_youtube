@@ -44,16 +44,24 @@ export const getLogin = (req, res) =>
 
 
 export const postLogin = async (req, res) => {
-  const { username, password } = req.body;
-  const exists = await modelUser.exists({ username });
-  if (!exists) {
+  const pageTitle = "Login";
+  const { username, password } = req.body; 
+  const user = await modelUser.findOne({ username }); //findOne은 db에서 찾는 함수
+  // const exists = await modelUser.exists({ username }); //db에 존재하는지만 확인
+  if (!user) {
     return res.status(400).render("login", {
-      pageTitle: "Login",
+      pageTitle,
       errorMessage: "An account with this username does not exists.",
     });
   }
-  // check if password correct
-  res.end();
+  const ok = await bcrypt.compare(password, user.password);
+  if (!ok) {
+    return res.status(400).render("login", {
+      pageTitle,
+      errorMessage: "Wrong password",
+    });
+  }
+  return res.redirect("/");
 };
 
 

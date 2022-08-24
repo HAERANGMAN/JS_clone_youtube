@@ -517,5 +517,29 @@ return res.status(404).render("404", { pageTitle: "Video not found." });
 ```
 
 
+## DB-pw체크하기 
+> findOne(db에서 인자로 찾음), exists(확인만함)의 차이를 구분해야함
+```
+export const postLogin = async (req, res) => {
+  const pageTitle = "Login";
+  const { username, password } = req.body; 
+  const user = await modelUser.findOne({ username }); //findOne은 db에서 찾는 함수
+  // const exists = await modelUser.exists({ username }); //db에 존재하는지만 확인
+  if (!user) {
+    return res.status(400).render("login", {
+      pageTitle,
+      errorMessage: "An account with this username does not exists.",
+    });
+  }
+  const ok = await bcrypt.compare(password, user.password);
+  if (!ok) {
+    return res.status(400).render("login", {
+      pageTitle,
+      errorMessage: "Wrong password",
+    });
+  }
+  return res.redirect("/");
+};
+```
 
 크게 템플릿, 컨트롤러, 라우터
