@@ -382,6 +382,7 @@ export const watch = async (req, res) => {
 `Collection`
 - Collection 확인 : show collections
 - Collection 삭제 : db.COLLECTION_NAME.drop()
+- Collection 내용보기 : db.{콜렉션}.find()
 
 
 ## Model의 Update
@@ -427,6 +428,8 @@ await Video.findByIdAndUpdate(id, {
 
 `해시태그처리 방법1(middleware로 처리)`
 ```
+(models/video.js)
+
 videoSchema.pre("save", async function () {
   this.hashtags = this.hashtags[0]
     .split(",")
@@ -478,6 +481,27 @@ export const search = async (req, res) => {
 };
 ```
 여기에서 `let videos = [];`는 if가 실행안될경우 return에서 videos의 변수선언이 안되어 오류가 나기때문에 공란으로 선언한번 해준것임. if가 True라면 공란이 아니라 업데이트 될것임
+
+
+## DB-pw처리
+> `해싱` : 일방향 출력(결정적 함수)
+> 같은 입력값 => 같은 해시값
+
+`node.bcrypt`를 사용
+saltorRound : 몇번 해시할것인가
+```
+('models/user.js')
+
+userSchema.pre("save", async function () {
+  this.password = await bcrypt.hash(this.password, 5);
+});
+```
+> this는 create되는 {}
+> 중간에서 pre를 사용해서 미들웨어처리함
+
+
+## DB-중복피하기
+
 
 
 
