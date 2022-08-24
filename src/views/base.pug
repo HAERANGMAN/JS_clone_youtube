@@ -9,10 +9,19 @@ html(lang="ko")
                 ul  
                     li
                         a(href="/") Home
-                    li
-                        a(href="/join")  Join
-                    li
-                        a(href="/login")  Login                        
+
+                    //-만약 세션이 없다면 표시                      
+                    //-if !req.session.loggedIn 이거는 정보가 없음 local써야함
+                    if loggedIn 
+                        li 
+                            a(herf="/logout") LogOut
+                        li 
+                            a(herf="/my-profile") #{loggedInUser.name}
+                    else
+                        li
+                            a(href="/join")  Join
+                        li
+                            a(href="/login")  Login                        
                     li
                         a(href="/search") Search
                     li

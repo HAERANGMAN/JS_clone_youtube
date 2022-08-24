@@ -542,4 +542,29 @@ export const postLogin = async (req, res) => {
 };
 ```
 
+## 쿠키, 세션
+> 브라우저와 백엔드간의 정보
+> 세션과 세션ID는 브라우저를 기억하는 방식(DB에 저장됨)
+> 백엔드에 요청을 보낼때 이 ID를 같이보내면 백엔드가 기억함
+> 
+> 쿠키: 정보를 주고받는 방법
+> session ID : 쿠키, 백엔드(session store)에 저장> 
+
+`{req.session.id}`
+```
+(userController.js)
+req.session.loggedIn = true;
+req.session.user = user;
+```
+
+## res.locals.하위변수
+> locals object는 pug에 import된 object임
+> 별다른 선언 없이 하위변수를 전역변수로 활용가능함 
+> #{하위변수} 형식으로 그냥 사용
+
+
+
+
+
+
 크게 템플릿, 컨트롤러, 라우터

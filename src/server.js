@@ -4,6 +4,7 @@ import session from "express-session";
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
+import { localsMiddleware } from "./middlewares";
 
 
 
@@ -24,22 +25,27 @@ app.use(logger);
 app.use(express.urlencoded({ extended: true })); //body를 가져오는기위해 미들웨어로 사용
 
 // 세션,쿠키
-app.use(
-        session({
+app.use(session({
           secret: "Hello!",
           resave: true,
-          saveUninitialized: true,
-        })
-      );
+          saveUninitialized: true,})
+);
       
-      app.use((req, res, next) => {
-        req.sessionStore.all((error, sessions) => {
-          console.log(sessions);
-          next();
-        });
-      });
+//로그인한 모든사람들을 보여줌
+// app.use((req, res, next) => {
+// req.sessionStore.all((error, sessions) => {
+//         console.log(sessions);
+//         next();});
+// });
 
-// 미들웨어는 router까지
+//id는 재방문해도 고정이지만 f5할때마다 potato는 증가함
+// app.get("/add-one", (req, res, next) => {
+//         req.session.potato += 1; 
+//         return res.send(`${req.session.id} ${req.session.potato}`);
+// });
+
+app.use(localsMiddleware) //위에서 썼던 세션관련한것을 여기서 활용
+// 미들웨어는 router전까지써야함
 //////////////////////////////////////////////////////////////////////
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);

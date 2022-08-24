@@ -22,7 +22,7 @@ export const postJoin = async (req, res) => {
     });
   }
   try {
-    await User.create({
+    await modelUser.create({
       name,
       username,
       email,
@@ -61,6 +61,8 @@ export const postLogin = async (req, res) => {
       errorMessage: "Wrong password",
     });
   }
+  req.session.loggedIn = true;
+  req.session.user = user; //세션에 저장하기
   return res.redirect("/");
 };
 
