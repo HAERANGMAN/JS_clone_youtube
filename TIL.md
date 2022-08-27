@@ -664,8 +664,52 @@ app.use(session({
 
 
 
+## 깃허브로 로그인
+`순서`
+```
+github로 유저정보들(scope)권한 로그인페이지 -> 이용자가 수락후 지정링크로 리다이렉션 -> 지정링크로 가면 controller의 finishGithubLogin발동 -> access_token 요청후 확인되면 사용자의 정보를 (https://api.github.com/user)여기에서 fetch해서 가져옴 -> 정보가 DB에있으면 세션true하고 로그인 -> 정보가 없으면 새로 만들어줌
+```
+
+`참고링크`
+- https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps
+
+`깃허브 주소+클라이언트 아이디&원하는기능`
+https://github.com/login/oauth/authorize?client_id=c122c1b88309c0f62793&allow_signup=true
+- 전부 url에 기반함
+
+`scope`
+> 원하는 내용들을 가져오기
+
+`간소화`
+```
+export const startGithubLogin = (req, res) => {
+  const baseUrl = "https://github.com/login/oauth/authorize";
+  const config = {
+    client_id: "9fac726866be2ff14f36",
+    allow_signup: false,
+    scope: "read:user user:email",
+  }; //필요햔 scope는 여기에 넣고 URLSearchParams을 사용
+  const params = new URLSearchParams(config).toString(); //toString을 꼭 해야함
+  const finalUrl = `${baseUrl}?${params}`;
+  return res.redirect(finalUrl);
+};
+```
+> 이 내용들을 통해서 scope 개별편집함
+
+> 이후 깃허브에 request후 access token을 받아오면 깃허브에서 이용자정보등을 가져올수 있음
+
+## fetch
+> 서버에는 없고 브라우저에만 존재하는 fetch
 
 
+## 로그인프로세스
+```
+로그인 프로세스를 결정해야함
+<< 자체회원가입 vs API >>
+예컨데 API는 verified되었고, 
+DB에 메일이 있다면? 찾아야지
+없다면? 새로 DB추가(비번을 줄까, socialonly를 줄까 등)
+```
 
 
 
