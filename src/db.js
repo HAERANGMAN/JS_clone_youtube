@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-mongoose.connect("mongodb://127.0.0.1:27017/youtube_clone");
+mongoose.connect(process.env.COOKIE_SECRET);
 // {   오류가 날경우 connect("주소", {요기})에 넣자
 //         useNewUrlParser: true,
 //         useUnifiedTopology: true,

@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 
 export const postJoin = async (req, res) => {
-  const { name, username, email, password, password2, location } = req.body;
+  const { name, username, email, password, password2 } = req.body;
   const pageTitle = "Join";
   if (password !== password2) {
     return res.status(400).render("join", {
@@ -27,7 +27,6 @@ export const postJoin = async (req, res) => {
       username,
       email,
       password,
-      location,
     });
     return res.redirect("/login");
   } catch (error) {
@@ -67,7 +66,12 @@ export const postLogin = async (req, res) => {
 };
 
 
+export const logout = (req, res) => {
+  req.session.loggedIn = false;
+  return res.redirect("/")
+};
+
+
 export const edit = (req, res) => res.send("Edit User");
 export const remove = (req, res) => res.send("Remove User");
-export const logout = (req, res) => res.send("Log out");
 export const see = (req, res) => res.send("See User");

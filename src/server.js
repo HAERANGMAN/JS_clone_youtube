@@ -1,6 +1,7 @@
 import morgan from "morgan";
 import express from "express";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
@@ -26,9 +27,11 @@ app.use(express.urlencoded({ extended: true })); //body를 가져오는기위해
 
 // 세션,쿠키
 app.use(session({
-          secret: "Hello!",
-          resave: true,
-          saveUninitialized: true,})
+          secret: process.env.DB_URL,
+          resave: false, //true일경우 일반접속자까지 쿠키저장
+          saveUninitialized: false, //true일경우 일반접속자까지 쿠키저장
+          store: MongoStore.create({ mongoUrl: process.env.COOKIE_SECRET }),
+        })
 );
       
 //로그인한 모든사람들을 보여줌
