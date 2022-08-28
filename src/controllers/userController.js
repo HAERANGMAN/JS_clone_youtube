@@ -73,12 +73,13 @@ export const postLogin = async (req, res) => {
 };
 
 
+//그냥 url만들어서 request해준거뿐
 export const startGithubLogin = (req, res) => {
   const baseUrl = "https://github.com/login/oauth/authorize";
   const config = {
     client_id: process.env.GITHUB_ID,
     allow_signup: false,
-    scope: "read:user user:email",
+    scope: "read:user user:email", //내가필요한정보량
   }; //필요햔 scope는 여기에 넣고 URLSearchParams을 사용
   const params = new URLSearchParams(config).toString(); //toString을 꼭 해야함
   const finalUrl = `${baseUrl}?${params}`;
@@ -124,9 +125,9 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    const emailObj = emailData.find( //조건문을 통해서 여러이메일중 가장 메인 이메일만 뽑아냄
+    const emailObj = emailData.find( 
       (email) => email.primary === true && email.verified === true
-    );
+    ); //조건문을 통해서 여러이메일중 가장 메인 이메일만 뽑아냄
     if (!emailObj) {
       return res.redirect("/login"); //메인이메일 없으면 로그인으로 다시
     }
@@ -149,11 +150,91 @@ export const finishGithubLogin = async (req, res) => {
   }
 };
 
+
 export const logout = (req, res) => {
   req.session.destroy();
-  return res.redirect("/")
+  return res.redirect("/");
 };
 
 
-export const edit = (req, res) => res.send("Edit User");
+export const getEdit = (req, res) => {
+  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+
+
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, email, username },
+  } = req;
+  // 위와 아래는 동일함
+  // const id = req.session.user.id
+  // const { name, email, username } = req.body;
+  let errors = [];
+  let errorMessage = `This ${errors} is already exists.`
+
+  // email, username 유효성 검사
+  const loggedInUser = await modelUser.findById(_id);
+  if ((loggedInUser.email !== email) && (await modelUser.exists({ email }))) {
+    errors.push('(Email)');
+  }
+  if ((loggedInUser.username !== username) && (await modelUser.exists({ username }))) {
+    errors.push('(Username)');
+  }
+  console.log(errorMessage, errors.length)
+  // email, username 둘 중 하나라도 유효성 검사에 통과하지 못하면, 프론트에 에러 반환
+  if (errors.length !== 0) {
+      return res.render("edit-profile", { pageTitle: "Edit Profile", errorMessage:errorMessage});
+  }
+  //findByIdAndUpdate는 3개의 arguement(user의 ID, 업데이트하려는 정보, option)
+  const updatedUser = await modelUser.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      email,
+      username
+    },
+    { new: true } //업데이트된 내용을 return해주는 방식
+  ); //DB에서의 업데이트
+  req.session.user = updatedUser; //브라우저에서의 업데이트
+  return res.redirect("/users/edit");
+};
+
+//깃허브 로그인한계정은 홈으로 리다이렉션
+export const getChangePassword = (req, res) => {
+  if (req.session.user.socialOnly === true) {
+    return res.redirect("/");
+  }
+  return res.render("users/change-password", { pageTitle: "Change Password" });
+};
+
+export const postChangePassword = (req, res) => {
+  // send notification
+  return res.redirect("/");
+};
+
+
+
 export const see = (req, res) => res.send("See User");
+
+
+
+// 카카오 로그인 구현하기 (REST API)
+
+// 카카오 로그인 구현하실 분들은 아래 링크들을 참조하시면 됩니다.
+// 구현 방식은 깃허브 로그인과 거의 동일합니다.
+// https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api
+
+// 0. 애플리케이션 등록
+// https://developers.kakao.com/docs/latest/ko/getting-started/app
+
+// 1. 인가 코드 받기
+// https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-code
+
+// 2. 토큰 받기
+// https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
+
+// 3. 사용자 정보 가져오기
+// https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#req-user-info

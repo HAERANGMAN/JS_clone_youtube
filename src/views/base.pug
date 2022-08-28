@@ -13,10 +13,14 @@ html(lang="ko")
                     //-만약 세션이 없다면 표시                      
                     //-if !req.session.loggedIn 이거는 정보가 없음 local써야함
                     if loggedIn 
+                        li
+                            a(href="/videos/upload") Upload Video
+                        li 
+                            a(href="/users/edit") Edit Profile
                         li 
                             a(href="/users/logout") Logout
-                        li 
-                            a(href="/my-profile") #{loggedInUser.name}
+                        //- li 
+                        //-     a(href="/my-profile") #{loggedInUser.name}
                     else
                         li
                             a(href="/login") Login                
@@ -25,8 +29,6 @@ html(lang="ko")
                                 
                     li
                         a(href="/search") Search
-                    li
-                        a(href="/videos/upload") Upload Video
                         
             //- if fakeUser.loggedIn
             //-     small Hello #{fakeUser.username}

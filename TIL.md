@@ -664,10 +664,10 @@ app.use(session({
 
 
 
-## 깃허브로 로그인
+## 로그인(Via Github)
 `순서`
 ```
-github로 유저정보들(scope)권한 로그인페이지 -> 이용자가 수락후 지정링크로 리다이렉션 -> 지정링크로 가면 controller의 finishGithubLogin발동 -> access_token 요청후 확인되면 사용자의 정보를 (https://api.github.com/user)여기에서 fetch해서 가져옴 -> 정보가 DB에있으면 세션true하고 로그인 -> 정보가 없으면 새로 만들어줌
+로그인페이지에서 github로 유저정보들(scope)권한 요청(res.redirect(finalUrl)) -> 이용자가 수락후 지정링크(깃허브홈피에서)로 리다이렉션 -> 지정링크로 가면 controller의 finishGithubLogin발동 -> access_token 요청후 확인되면 사용자의 정보를 (https://api.github.com/user)여기에서 fetch해서 가져옴 -> 정보가 DB에있으면 세션true하고 로그인 -> 정보가 없으면 새로 만들어줌
 ```
 
 `참고링크`
@@ -710,6 +710,59 @@ export const startGithubLogin = (req, res) => {
 DB에 메일이 있다면? 찾아야지
 없다면? 새로 DB추가(비번을 줄까, socialonly를 줄까 등)
 ```
+
+
+## Edit
+> 로그인안하고 주소를 직접쳐서 들어온다면? 두가지 문제가 생김
+> 1. 페이지상의 오류
+`res.locals.loggedInUser = req.session.user`에서 req.session.user가 없기때문에 오류가 발생함 고로
+```
+res.locals.loggedInUser = req.session.user || {};
+or을 의미하는 ||를 넣어 빈 딕셔너리를 반환해줌
+```
+> 2. 권한문제
+`미들웨어`로 문제해결
+로그인이 안되어있다면 로그인페이지로 강제전환
+로그인이 되어있으면 next()로 진행
+
+
+## Edit
+> DB도 업데이트 해야하고, 세션도 업데이트 해야함
+
+
+## JS 작성법
+`위와 아래는 동일함`
+```
+const {
+  session: {
+    user: { _id },
+  },
+  body: { name, email, username },
+} = req;
+```
+```
+const id = req.session.user.id
+const { name, email, username } = req.body;
+```
+
+## findByIdAndUpdate
+> 3개의 arguement(user의 ID, 업데이트하려는 정보, option)
+```
+const updatedUser = await modelUser.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      email,
+      username
+    },
+    { new: true } //업데이트된 내용을 return해주는 방식
+); //DB에서의 업데이트
+```
+
+## Change Password
+
+
+## Change Profile Picture
 
 
 
