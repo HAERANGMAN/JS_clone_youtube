@@ -1,6 +1,7 @@
 import modelUser from "../models/user";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+import modelVideo from "../models/video";
 //모듈 내보낼때 꼭 익스포트 써야함(파이썬이랑 다름!)
 
 
@@ -167,7 +168,7 @@ export const postEdit = async (req, res) => {
     session: {
       user: { _id, avatarUrl },
     },
-    body: { name, email, username },
+    body: { name, email, username }, 
     file,
   } = req;
   // 위와 아래는 동일함
@@ -189,6 +190,7 @@ export const postEdit = async (req, res) => {
   if (errors.length !== 0) {
       return res.render("edit-profile", { pageTitle: "Edit Profile", errorMessage:errorMessage});
   }
+  console.log(file)
   //findByIdAndUpdate는 3개의 arguement(user의 ID, 업데이트하려는 정보, option)
   const updatedUser = await modelUser.findByIdAndUpdate(
     _id,
@@ -240,11 +242,21 @@ export const postChangePassword = async (req, res) => {
 }; 
   
   
-  
-  
-
-
-export const see = (req, res) => res.send("See User");
+export const seeProfile = async (req, res) => {
+  //url에서 id값 가져오기
+  const { id } = req.params;
+  const user = await modelUser.findById(id);
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "User not found." });
+  }
+  //비디오를 보내줌
+  const videos = await modelVideo.find({ owner: user._id });
+  return res.render("profile", {
+    pageTitle: `${user.name}의 Profile`,
+    user,
+    videos,
+  });
+};
 
 
 

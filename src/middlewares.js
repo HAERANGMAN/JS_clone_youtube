@@ -27,5 +27,17 @@ export const publicOnlyMiddleware = (req, res, next) => {
         }
 };
 
+//dest는 서버에 저장하는 경로, limits는 파일사이즈
+export const avatarUpload = multer({
+        dest: "uploads/avatars/",
+        limits: {
+          fileSize: 10000000,
+        },
+});
 
-export const uploadFiles = multer({ dest: "uploads/" });
+export const videoUpload = multer({
+dest: "uploads/videos/",
+limits: {
+        fileSize: 20000000,
+},
+});

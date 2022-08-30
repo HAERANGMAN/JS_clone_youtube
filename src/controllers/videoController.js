@@ -19,6 +19,7 @@
 // ];
 
 import modelVideo from "../models/video";
+import modelUser from "../models/user";
 
 ///////////////////////////////////////////////////////////////
 // callback 방식
@@ -41,11 +42,14 @@ export const home = async (req, res) => {
 export const watch = async (req, res) => {
   const { id } = req.params; //url에서 오는것임 //ES6문법
   // const video = videos[id - 1]; //인덱스=id-1
-  const video = await modelVideo.findById(id);
+  // const video = await modelVideo.findById(id);
+  // const owner = await modelUser.findById(video.owner); //비디오에서 찾은 owner값(ID)를 modelUser에서 찾는 과정임 그것을 render로 보내줌
+  const video = await modelVideo.findById(id).populate("owner");
+  // populate를 통해서 modelVideo.owner에 {"User"데이터}를 역참조해줌 
   if (!video) {
     return res.render("404", { pageTitle: "Video not found." });
   }
-  return res.render("watch", { pageTitle: video.title, video });
+  return res.render("watch", { pageTitle: video.title, video});
 };
 
 
@@ -94,15 +98,22 @@ export const getUpload = (req, res) => {
 }
 
 export const postUpload = async (req, res) => {
+  const {
+    user: { _id },
+  } = req.session;
+  const { path: fileUrl } = req.file;
   const { title, description, hashtags } = req.body;
   try {
     await modelVideo.create({
       title,
       description,
+      fileUrl,
+      owner: _id,
       hashtags: modelVideo.formatHashtags(hashtags),
     });
     return res.redirect("/");
   } catch (error) {
+    console.log(error);
     return res.status(400).render("upload", {
       pageTitle: "Upload Video",
       errorMessage: error._message, //퍼그에 errorMessage를 던져줌

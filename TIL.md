@@ -768,22 +768,23 @@ const updatedUser = await modelUser.findByIdAndUpdate(
 
 8.5강 3분 45초부터
 
-## Change Profile Picture
+## Change Profile Picture(multer)
 
 > https://www.npmjs.com/package/multer
 
 1. 삽입을 위한 input만들기("image/*")
 2. middleware : `npm i multer`
-3. 백엔드로 파일을 보내기 위해 encoding type(enctype), 임의의 id도부여함
-4. db에는 파일의 주소(id)만 쓰는 것임(파일저장소가 아님!)
+3. multer는 req.file을 제공함
+4. 백엔드로 파일을 보내기 위해 encoding type(enctype), 임의의 id도부여함
+5. db에는 파일의 주소(id)만 쓰는 것임(파일저장소가 아님!)
 
 ```bash
 userRouter.route("/edit").all(protectorMiddleware).get(getEdit).post(uploadFiles.single("avartar"), postEdit);
 //포스트 앞에 uploadFiles미들웨어를 써줌으로 해서 input.file인 avartar를 처리함
 ```
 
-5. 파일을 보여주기 위해서 폴더 자체를 노출시켜야함 express.static
-6. 만약 누군가가 /uploads로 접근한다면 uploads 라는 폴더를 보여주라고 함
+6. 파일을 보여주기 위해서 폴더 자체를 노출시켜야함 express.static
+7. 만약 누군가가 /uploads로 접근한다면 uploads 라는 폴더를 보여주라고 함
 
 > uploads폴더에 저장하는건 서버에 저장한다는 소리인데
 > 서버가 종료되거나 바뀌면 기존에 저장된 사진들은 다 날아간다는 소리
@@ -798,6 +799,26 @@ userRouter.route("/edit").all(protectorMiddleware).get(getEdit).post(uploadFiles
 avatarUrl: file ? file.path : avatarUrl
 ```
 
+
+## mongoos relationship
+
+```bash
+<<video.js>>
+
+owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" }
+```
+
+> ref: "User"에서 ObjectId를 가져옴
+
+`populate`
+
+```bash
+<<videoController.js>>
+
+const video = await modelVideo.findById(id).populate("owner");
+```
+
+> modelVideo.owner = {from "User" 데이터} 역참조
 
 
 

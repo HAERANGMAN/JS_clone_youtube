@@ -2,11 +2,19 @@ extends base
 
 
 block content
+    //- express.static에 대한 상대경로, 컨트롤러 
+    video(src="/" + video.fileUrl, controls)
     div
         p=video.description
         small=video.createdAt
     //- h1=video.title
     //- h3 #{video.views} #{video.views === 1 ? "view" : "views"}
-    a(href=`${video.id}/edit`) Edit Video &rarr;
+    div
+        small Uploaded by 
+            a(href=`/users/${video.owner._id}`)=video.owner.name
+        //- small Uploaded by #{owner.name}
+    //-db의 id값과 session의 _id값이 일치하면 보여주기
+    if String(video.owner._id) === String(loggedInUser._id)        
+        a(href=`${video.id}/edit`) Edit Video &rarr;
         br
-    a(href=`${video.id}/delete`) Delete Video &rarr;
+        a(href=`${video.id}/delete`) Delete Video &rarr;

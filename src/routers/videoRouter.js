@@ -1,6 +1,6 @@
 import express from "express";
 import { watch, getEdit, postEdit, getUpload, postUpload, deleteVideo } from "../controllers/videoController";
-import { protectorMiddleware } from "../middlewares";
+import { protectorMiddleware, videoUpload } from "../middlewares";
 
 
 const videoRouter = express.Router();
@@ -17,7 +17,7 @@ videoRouter.route("/:id([0-9a-f]{24})/delete").all(protectorMiddleware).get(dele
 
 
 videoRouter.get("/upload", protectorMiddleware, getUpload); //한줄로도 가능함!
-videoRouter.post("/upload", protectorMiddleware, postUpload);
+videoRouter.post("/upload", protectorMiddleware, videoUpload.single("video"), postUpload);
 
 
 videoRouter.get("/:id(\\d+)/delete", deleteVideo);
