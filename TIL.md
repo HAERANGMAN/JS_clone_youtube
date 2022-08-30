@@ -5,7 +5,7 @@
 - 설치된 npm은 package.json에 "dependencies"를 남기고, "dependencies"에 있는 npm들은 `npm i` 만쳐도 설치됨
 - 협업시에 .gitignore로 /node_modules를 무시하고 `npm i`로 depende~+devDepend~설치하게 하면됨
 
-```
+```bash
 고로 중요한것은 package.json과 index.js(의 dependencies+devDep)
 ```
 
@@ -14,7 +14,7 @@
 - 이러나 저러나 둘다 node_modules에 깔림
   `barbel`
 
-```
+```bash
 최신 자바스크립트 문법을 구형 브라우저에서도 돌 수 있도록 코드 자체를 변환시킨다.
 https://babeljs.io/setup에서 설치
 Utilities: Nodemon, Language APIs: Node클릭후 설치
@@ -26,7 +26,7 @@ Utilities: Nodemon, Language APIs: Node클릭후 설치
 - 바벨 작동을 위한 스크립트도 패키지에 넣음
 - 바벨노드로 index.js를 변환
 
-```
+```bash
 {
   "scripts": {
     "dev": "babel-node index.js"
@@ -41,7 +41,7 @@ Utilities: Nodemon, Language APIs: Node클릭후 설치
 - nodemon은 파일수정을 감시하는 패키지, 매번 npm run {scrpit}없이 저장 후 자동코드 재시작함
 - 스크립트 아래와 같이 업데이트
 
-```
+```bash
 "dev": "nodemon --exec babel-node index.js"
 ```
 
@@ -56,7 +56,7 @@ Utilities: Nodemon, Language APIs: Node클릭후 설치
 > 작동되는 것은 packge.json에서의 script이므로  
 > 현재의 node.JS의 작동디렉토리는 최상위폴더임
 
-```
+```bash
 import express from "express";
 express().listen(4000, () => console.log(`✅ Server listenting on port http://localhost:4000 🚀`));
 ```
@@ -66,7 +66,7 @@ express().listen(4000, () => console.log(`✅ Server listenting on port http://l
 
 ## request, response
 
-```
+```bash
 const handleHome = (request, response) => {
     return response.send("<h1>안녕하세용!</h1>");
 };
@@ -84,7 +84,7 @@ app.get("/login", handleLogin);
 - "/"를 통해 get요청할경우 handleHome이 작동되고 반을을 보내줌
 - `request`에는 쿠키/브라우저정보/ip등 요구자의 정보가 들어있음
 
-```
+```bash
 - response.end()는 끝내기
 - response.send()는 메세지 보내기
 - cookie()
@@ -98,7 +98,7 @@ app.get("/login", handleLogin);
 
 `request, response 의 사이에 있는것`
 
-```
+```bash
 const mothodLogger = (req, res, next) => {
   // return res.send("바보야~"); 여기서 리턴해버리면 뒤에함수 2개는 작동안함
   next();
@@ -116,7 +116,7 @@ app.get("/", methodLogger, routerLogger, home);
 `get.use()`
 > 미들웨어를 전역으로 사용하는 방법
 
-```
+```bash
 const mothodLogger = (req, res, next) => {
   // return res.send("바보야~"); 여기서 리턴해버리면 뒤에함수 2개는 작동안함
   next();
@@ -137,14 +137,14 @@ app.get("/", home);
 > - 파이썬과 다른점은 `export`를 해줘야함!  
 > - clean code를 위해서 파일 분리!
 >
-```
+```bash
 <module.js>
 
 export const {변수명};
 export default {함수명};
 ```
 
-```
+```bash
 <main.js>
 
 import {변수명1, 변수명2} from "{상대경로}"
@@ -164,7 +164,7 @@ import 디폴트니까 아무이름 from "{상대경로}"
 - "/:{변수명}/~~~" 을 통해서 사용
 - request.params에서는 {변수명: 입력된id}로 확인가능
 
-```
+```bash
 //변수가 아래로 내려가야함
 userRouter.get("/remove", remove);
 userRouter.get("/:id", see); 
@@ -172,7 +172,7 @@ userRouter.get("/:id", see);
 
 `주의`
 
-```
+```bash
 //이렇게 작성될경우 remove가 id로 들어가면 밑의 컨트롤러는 작동이안됨
 userRouter.get("/:id", see); 
 userRouter.get("/remove", remove);
@@ -185,7 +185,7 @@ html을 편하게 사용하기위해 씀
 > 2 app.use() 앞에 set으로 설정  
 > 3 res.render('home') //controller에서!
 
-```
+```bash
 app.set("view engine", "pug")
 app.set("views", process.cwd() + "/src/views"); //package.script 기본경로 재설정
 app.use~~~
@@ -197,7 +197,7 @@ app.use~~~
 > 중복을 편하게 쓰기위해서 3가지방법  
 > partials, block, #{}
 
-```
+```bash
 pug 페이지 작성후
 ~~~~~~~~~~~~~~~~~
 include partials/footer.pug
@@ -205,7 +205,7 @@ include partials/footer.pug
 
 `base.pug`
 
-```
+```bash
 block {이름}
 or
 head
@@ -217,7 +217,7 @@ header
 
 `any.pug`
 
-```
+```bash
 block {이름}
     {넣을 tag} {내용}
 or
@@ -236,7 +236,7 @@ res.render('home', {name : '내용'}) //controller에서!
 
 > partials처럼 블록으로 사용
 
-```
+```bash
 mixin video(info)
     div
         h4=info.title
@@ -249,7 +249,7 @@ mixin video(info)
 
 > +를 붙여서 사용(for x in y와 같이 사용된 사례임)
 
-```
+```bash
 include mixins/video
 
 each potato in videos
@@ -260,7 +260,7 @@ each potato in videos
 
 > 'edit'와 '/edit'의 차이
 
-```
+```bash
 a(href="/video/edit")--->localhost:4000/video/edit
 a(href="video/edit")--->localhost:4000/videos/video/edit
 a(href=`${video.id}/edit`)--->localhost:4000/videos/1/edit
@@ -270,7 +270,7 @@ a(href=`${video.id}/edit`)--->localhost:4000/videos/1/edit
 
 > 1줄 if문
 
-```
+```bash
 h3 #{video.views} #{video.views === 1 ? "view" : "views"}
 h3 #{video.views === 1 ? `${video.views} view` : `${video.views} views` }
 ```
@@ -282,7 +282,7 @@ h3 #{video.views === 1 ? `${video.views} view` : `${video.views} views` }
 > 공개적으로 action과 name, value가 전송된것...
 > 주로 검색창에서 많이사용
 
-```
+```bash
 form(action="/save-changes", method="GET")
         input(name="title", placeholder="Video Title", value=video.title, required)
         input(value="Save",type="submit")
@@ -294,7 +294,7 @@ form(action="/save-changes", method="GET")
 > database를 CRUD하는경우
 > 파일이나 아이디 비밀번호를 보낼때 주소 변화없이 그대로 보내줌
 
-```
+```bash
 form(method="POST")
         input(name="title", placeholder="Video Title", value=video.title, required)
         input(value="Save",type="submit")
@@ -306,7 +306,7 @@ form(method="POST")
 
 > 파이썬의 append역할
 
-```
+```bash
 let videos = []
 videos.push(newVideo);
 ```
@@ -325,7 +325,7 @@ mongosh: MongoDB에 대한 쉘 인터페이스 (클라이언트 같은 느낌)
 > noSQL의 문제인 유효성검증을 위해 데이터의 형식을 정해주는 카테고리
 > <https://mongoosejs.com/docs/schematypes.html>
 
-```
+```bash
 import mongoose from "mongoose";
 
 const videoSchema = new mongoose.Schema({
@@ -356,7 +356,7 @@ video.find({search terms}, ) // search terms가 비었을경우 모든형식
 
 `callback`
 
-```
+```bash
 console.log("start")
 Video.find({}, (error, videos) => {
   return res.render("home", { pageTitle: "Home", videos });
@@ -366,14 +366,14 @@ console.log("finished")
 
 > 위의 실행순서는 start -> finished -> Video의순서
 > 순차대로 실행되었다가 Video에서 데이터가 올때까지 대기함
-> 직관적이지 않고 현재 어디에서 실행중인지 모름
+> 직관적이지 않고 현재 어디에서 실행중인지 모름  
 
 > await는 func안에서 사용되기 때문에
 > async를 적어줘서 함수안에 쓰이도록 만들어줌
 
 `promise`
 
-```
+```bash
 export const home = async (req, res) => {  
   try{
     const videos = await Video.find({});
@@ -444,7 +444,7 @@ export const watch = async (req, res) => {
   
 `수정방법 1`
 
-```
+```bash
 const video = await modelVideo.findById(id);
 // exists({ 원하는property : value})로 검색가능, id는 id만
 if (!video) {
@@ -460,7 +460,7 @@ await video.save();
 
 `수정방법 2`
 
-```
+```bash
 const video = await modelVideo.exists({ _id: id });
 // exists({ 원하는property : value})로 검색가능, id는 id만
 if (!video) {
@@ -483,7 +483,7 @@ await Video.findByIdAndUpdate(id, {
 
 `해시태그처리 방법1(middleware로 처리)`
 
-```
+```bash
 (models/video.js)
 
 videoSchema.pre("save", async function () {
@@ -497,13 +497,13 @@ const modelVideo = mongoose.model("Video", videoSchema);
 
 `해시태그처리 방법2(변수로 처리)`
 
-```
+```bash
 export const formatHashtags = (potato) => potato.split(",").map((tomato)=>(tomato.startsWith("#") ? word : `#${word}`))
 ```
 
 `해시태그처리 방법3(Static Way)`
 
-```
+```bash
 videoSchema.static("formatHashtags", function (hashtags) {
   return hashtags
     .split(",")
@@ -515,7 +515,7 @@ const modelVideo = mongoose.model("Video", videoSchema);
 
 ## 백데이터 오름차순으로 보이기
 
-```
+```bash
 export const home = async (req, res) => {  
   const potato = await modelVideo.find({}).sort({ createdAt: "desc" });
   const videos = potato;
@@ -527,7 +527,7 @@ export const home = async (req, res) => {
 
 > MongoDB에서 지원해주는것
 
-```
+```bash
 export const search = async (req, res) => {
   const { keyword } = req.query;
   let videos = [];
@@ -552,7 +552,7 @@ export const search = async (req, res) => {
 `node.bcrypt`를 사용
 saltorRound : 몇번 해시할것인가
 
-```
+```bash
 ('models/user.js')
 
 userSchema.pre("save", async function () {
@@ -568,7 +568,7 @@ userSchema.pre("save", async function () {
 > 아래의 exists를 활용, 2개를 동시에 쓰기위해 $or문법활용
 > 근데 이경우에는 그냥 2개 개별로 쓰는게 나을듯
 
-```
+```bash
 (userController.js)
 
 const exists = await modelUser.exists({ $or: [{ username }, { email }] });
@@ -662,11 +662,9 @@ app.use(session({
 4. `import "dotenv/config";`를 최상위파일 맨위에써줘야 하위에서 작동
 5. `process.env.변수` 형식으로 사용
 
-
-
 ## 로그인(Via Github)
 `순서`
-```
+```bash
 로그인페이지에서 github로 유저정보들(scope)권한 요청(res.redirect(finalUrl)) -> 이용자가 수락후 지정링크(깃허브홈피에서)로 리다이렉션 -> 지정링크로 가면 controller의 finishGithubLogin발동 -> access_token 요청후 확인되면 사용자의 정보를 (https://api.github.com/user)여기에서 fetch해서 가져옴 -> 정보가 DB에있으면 세션true하고 로그인 -> 정보가 없으면 새로 만들어줌
 ```
 
@@ -681,7 +679,7 @@ https://github.com/login/oauth/authorize?client_id=c122c1b88309c0f62793&allow_si
 > 원하는 내용들을 가져오기
 
 `간소화`
-```
+```bash
 export const startGithubLogin = (req, res) => {
   const baseUrl = "https://github.com/login/oauth/authorize";
   const config = {
@@ -703,7 +701,7 @@ export const startGithubLogin = (req, res) => {
 
 
 ## 로그인프로세스
-```
+```bash
 로그인 프로세스를 결정해야함
 << 자체회원가입 vs API >>
 예컨데 API는 verified되었고, 
@@ -725,14 +723,14 @@ or을 의미하는 ||를 넣어 빈 딕셔너리를 반환해줌
 로그인이 안되어있다면 로그인페이지로 강제전환
 로그인이 되어있으면 next()로 진행
 
-
 ## Edit
+
 > DB도 업데이트 해야하고, 세션도 업데이트 해야함
 
-
 ## JS 작성법
+
 `위와 아래는 동일함`
-```
+```bash
 const {
   session: {
     user: { _id },
@@ -740,14 +738,14 @@ const {
   body: { name, email, username },
 } = req;
 ```
-```
+```bash
 const id = req.session.user.id
 const { name, email, username } = req.body;
 ```
 
 ## findByIdAndUpdate
 > 3개의 arguement(user의 ID, 업데이트하려는 정보, option)
-```
+```bash
 const updatedUser = await modelUser.findByIdAndUpdate(
     _id,
     {
@@ -761,8 +759,45 @@ const updatedUser = await modelUser.findByIdAndUpdate(
 
 ## Change Password
 
+> 깃허브 로그인의 경우 최초 비밀번호가 없음
+> (socialOnly)애초에 비밀번호 앵커로 접근 불가능하게 함  
+
+1. input을 DB에 업데이트 하기전에 session에서 id 체크먼저(본인확인)
+2. 새로운패스워드1 확인2가 맞는지 확인 아니면 400 return
+3. 
+
+8.5강 3분 45초부터
 
 ## Change Profile Picture
+
+> https://www.npmjs.com/package/multer
+
+1. 삽입을 위한 input만들기("image/*")
+2. middleware : `npm i multer`
+3. 백엔드로 파일을 보내기 위해 encoding type(enctype), 임의의 id도부여함
+4. db에는 파일의 주소(id)만 쓰는 것임(파일저장소가 아님!)
+
+```bash
+userRouter.route("/edit").all(protectorMiddleware).get(getEdit).post(uploadFiles.single("avartar"), postEdit);
+//포스트 앞에 uploadFiles미들웨어를 써줌으로 해서 input.file인 avartar를 처리함
+```
+
+5. 파일을 보여주기 위해서 폴더 자체를 노출시켜야함 express.static
+6. 만약 누군가가 /uploads로 접근한다면 uploads 라는 폴더를 보여주라고 함
+
+> uploads폴더에 저장하는건 서버에 저장한다는 소리인데
+> 서버가 종료되거나 바뀌면 기존에 저장된 사진들은 다 날아간다는 소리
+> 다른곳에 저장하는 방법이 필요함
+
+
+## JS if else
+
+> file이 있으면 file.path 없으면 avatarUrl
+
+```bash
+avatarUrl: file ? file.path : avatarUrl
+```
+
 
 
 

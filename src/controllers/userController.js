@@ -165,9 +165,10 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { _id },
+      user: { _id, avatarUrl },
     },
     body: { name, email, username },
+    file,
   } = req;
   // 위와 아래는 동일함
   // const id = req.session.user.id
@@ -191,7 +192,8 @@ export const postEdit = async (req, res) => {
   //findByIdAndUpdate는 3개의 arguement(user의 ID, 업데이트하려는 정보, option)
   const updatedUser = await modelUser.findByIdAndUpdate(
     _id,
-    {
+    { //if else file이 있으면 file.path 없으면 avatarUrl
+      avatarUrl: file ? file.path : avatarUrl,
       name,
       email,
       username
@@ -207,14 +209,39 @@ export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly === true) {
     return res.redirect("/");
   }
-  return res.render("users/change-password", { pageTitle: "Change Password" });
+  return res.render("change-password", { pageTitle: "Change Password" });
 };
 
-export const postChangePassword = (req, res) => {
-  // send notification
-  return res.redirect("/");
-};
-
+export const postChangePassword = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { oldPassword, newPassword, newPasswordConfirmation },
+  } = req;
+  const user = await modelUser.findById(_id); // session에서 사용자 본인확인후
+  const ok = await bcrypt.compare(oldPassword, user.password);
+  if (!ok) { // input.oldPW와 DB의 일치여부 확인
+    return res.status(400).render("change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The current password is incorrect",
+    });
+  } // input.newPW 일치여부 확인
+  if (newPassword !== newPasswordConfirmation) {
+    return res.status(400).render("change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The password does not match the confirmation",
+    });
+  }
+  user.password = newPassword; // input을 db에 보내줌
+  await user.save(); //save
+  return res.redirect("/users/logout");
+  //만약 로그아웃을 안시켰다면 다시 session을 업데이트 해줘야함
+}; 
+  
+  
+  
+  
 
 
 export const see = (req, res) => res.send("See User");
