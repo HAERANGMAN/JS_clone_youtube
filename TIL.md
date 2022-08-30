@@ -20,7 +20,7 @@ https://babeljs.io/setup에서 설치
 Utilities: Nodemon, Language APIs: Node클릭후 설치
 ```
 
-`npm install @babel/core @babel/node --save-dev`
+`npm install @babel/core @babel/node --save-dev (or -D라고쳐도됨)`
 
 - 위를 입력하여 바벨에서 nodemon, node 설치
 - 바벨 작동을 위한 스크립트도 패키지에 넣음
@@ -302,13 +302,26 @@ form(method="POST")
 
 > 이 경우 res.body.title로 가져와야 한다
 
-## Push
+## 리스트 추가제거(Push, splice, filter)
 
 > 파이썬의 append역할
 
 ```bash
 let videos = []
 videos.push(newVideo);
+```
+
+> splice 대체하는 역할
+> splice(위치, 삭제유무, 대체할단어)
+
+```bash
+[리스트].splice(user.videos.indexOf(id),1)
+//인덱스 찾아서 삭제
+```
+
+```bash
+const value = "특정값"
+arr = arr.filter(item => item !== value)
 ```
 
 ## mongoose
@@ -821,6 +834,32 @@ const video = await modelVideo.findById(id).populate("owner");
 > modelVideo.owner = {from "User" 데이터} 역참조
 
 
+## Webpack
+
+> barbel(백엔드, 근데 웹팩에서 바벨도씀)처럼 (오래된 or 모든)브라우저가 이해할 수 있도록 프론트엔드에서 변형시켜주는 프로그램
+> 업계표준이며 자체로는 잘안씀, 프레임워크 안에 웹팩이 있기떄문
+
+`npm i webpack webpack-cli -D`
+
+test: 작업할 확장자
+use: {
+    loader: 사용할툴
+    option: loader가 쓸
+}
+
+mode : `development` or `production`(완전압축)
 
 
-크게 템플릿, 컨트롤러, 라우터
+
+
+
+
+
+
+request, response, template, controller, router
+
+본인만 영상/프로필 등에서 수정/삭제/접근 가능하도록 미들웨어 설정
+
+
+1. 해시가 해시되는오류
+2. 권한자가 아닌데 비디오 수정에 접근할수 있는 오류

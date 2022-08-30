@@ -245,7 +245,9 @@ export const postChangePassword = async (req, res) => {
 export const seeProfile = async (req, res) => {
   //url에서 id값 가져오기
   const { id } = req.params;
-  const user = await modelUser.findById(id);
+  // const user = await modelUser.findById(id);
+  const user = await modelUser.findById(id).populate("videos");
+  //populate를 통해서 videos를 가져옴
   if (!user) {
     return res.status(404).render("404", { pageTitle: "User not found." });
   }
@@ -254,7 +256,7 @@ export const seeProfile = async (req, res) => {
   return res.render("profile", {
     pageTitle: `${user.name}의 Profile`,
     user,
-    videos,
+    // videos, //user안에 videos라는 []가 있으므로 개별 선언안함
   });
 };
 

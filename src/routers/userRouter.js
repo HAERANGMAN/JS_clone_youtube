@@ -1,5 +1,5 @@
 import express from "express";
-import { getEdit, postEdit, logout, see, startGithubLogin,
+import { getEdit, postEdit, logout, seeProfile, startGithubLogin,
         finishGithubLogin, getChangePassword, postChangePassword} from "../controllers/userController";
 import { protectorMiddleware, publicOnlyMiddleware, avatarUpload} from "../middlewares";
 
