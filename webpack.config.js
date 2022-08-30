@@ -1,13 +1,24 @@
 // 항상 변환할 entry와 변환후 output(파일, 절대경로)를 설정해야함
 
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 
 module.exports = {
-  entry: "./src/client/js/main.js",
+  entry: {
+    main: "./src/client/js/main.js",
+    videoPlayer: "./src/client/js/videoPlayer.js",
+  },
   mode: "development",
+  watch: true,
+  plugins: [
+        new MiniCssExtractPlugin({
+          filename: "css/styles.css", //output CSS
+        }),
+      ],
   output: {
-    filename: "main.js",
-    path: path.resolve(__dirname, "assets", "js"), //알아서 "/"로 경로지정해줌
+        filename: "js/[name].js",
+        path: path.resolve(__dirname, "assets"), //알아서 "/"로 경로지정해줌
+        clean: true,
   },
   module: {
     rules: [
@@ -19,6 +30,10 @@ module.exports = {
             presets: [["@babel/preset-env", { targets: "defaults" }]],
           },
         },
+      },
+      { //확장자, loader를 여러개를 리스트로(뒤부터실행됨)
+        test: /\.scss$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },
     ],
   },

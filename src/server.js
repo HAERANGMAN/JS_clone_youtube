@@ -52,6 +52,8 @@ app.use(localsMiddleware) //위에서 썼던 세션관련한것을 여기서 활
 //////////////////////////////////////////////////////////////////////
 app.use("/uploads", express.static("uploads"))
 //(사진)만약 누군가가 /uploads로 접근한다면 uploads 라는 폴더를 보여주라고 함
+app.use("/static", express.static("assets")) //assets 공개 (url, 폴더명 순)
+//웹경로는 static/AAAA/BBBB 이겠지만 실제 파일경로는 assets/AAAA/BBBB
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);

@@ -843,17 +843,65 @@ const video = await modelVideo.findById(id).populate("owner");
 
 test: 작업할 확장자
 use: {
-    loader: 사용할툴
+    loader: 사용할툴([여,러,가,지]일경우에 뒤에서(지)부터 시작함)
     option: loader가 쓸
 }
 
 mode : `development` or `production`(완전압축)
 
+`개별 엔트리`
+> name으로 main과 videoPlayer가 감
+```
+  entry: {
+    main: "./src/client/js/main.js",
+    videoPlayer: "./src/client/js/videoPlayer.js",
+  },
+
+  output: {
+        filename: "js/[name].js",
+  }
+```
+
+## Webpack-CSS
+
+```bash
+npm i sass-loader sass webpack -D
+npm i css-loader -D
+npm i style-loader -D
+npm i mini-css-extract-plugin -D //css로 따로 분리 JS가 많으면 css로딩을 기다려야함, 그전에 미리 css보여주기위해서 따로분리해서 적용
+```
+
+1. sass-loader : Transforms Sass to CSS. (Input: Sass, Output: CSS)
+2. css-loader : Transforms CSS to a JavaScript module. (Input: CSS, Output: JavaScript)
+3. style-loader : Injects the CSS, that is exported by the JavaScript module, into a <style> tag at runtime. (Input: JavaScript, Output: JavaScript).
+
+## 프론트엔드 흐름
+
+client에서 작업(with scss) -> 웹팩실행(npm run front) -> assets에서 해석됨 -> server.js에서 static으로 assets 공개 -> base.pug 마지막줄에서 script를 import해서 브라우저에서 공개됨
+
+## webpack 개발환경개선
+>자동으로 서버 업데이트, 파일 업데이트
+```bash
+watch: true,
+clean: true
+```
+
+## Pug 퍼그에서 각주
+
+//는 웹에서도 보임
+//-는 웹에서 안보임 파일에서만 보임
 
 
 
 
 
+####################################################################
+
+10강 완강후
+https://github.com/nomadcoders/wetube-reloaded/commit/0b4120e31cd2111e0fdff7449ba78ec2dbb45fdb
+에서 `forms.scss` 꼭 변경해야함
+
+####################################################################
 
 
 request, response, template, controller, router
