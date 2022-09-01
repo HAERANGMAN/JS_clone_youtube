@@ -31,7 +31,7 @@ import modelUser from "../models/user";
 ////////////////////////////////////////////////////////////////
 
 export const home = async (req, res) => {  
-  const potato = await modelVideo.find({}).sort({ createdAt: "desc" });
+  const potato = await modelVideo.find({}).sort({ createdAt: "desc" }).populate("owner");
   const videos = potato;
   return res.render("home", {pageTitle: "Home", videos});
 }; //퍼그(pageTitle)에서 렌더링됨

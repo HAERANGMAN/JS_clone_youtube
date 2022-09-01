@@ -891,11 +891,22 @@ clean: true
 //는 웹에서도 보임
 //-는 웹에서 안보임 파일에서만 보임
 
-
+## SCSS
+> `작업원칙`
+> 만들어져있는 페이지만큼(pug, html) SCSS에서 screen폴더 및 파일도 작성되어야 함
 
 
 
 ####################################################################
+
+10.2 
+https://github.com/nomadcoders/wetube-reloaded/commit/37bec52bc3552170d0cd019ae822dc45d10f8776
+
+10.3
+https://github.com/nomadcoders/wetube-reloaded/commit/8129270d7c2b58ca69cc7dccb6db8dee154aadb8
+
+변경사항 모두 적용해야함
+
 
 10강 완강후
 https://github.com/nomadcoders/wetube-reloaded/commit/0b4120e31cd2111e0fdff7449ba78ec2dbb45fdb

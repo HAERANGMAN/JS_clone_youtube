@@ -4,48 +4,9 @@ html(lang="ko")
         link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css")
         link(rel="stylesheet", href="/static/css/styles.css")
     body
-        header 
-            h1=pageTitle
-            nav
-                ul  
-                    li
-                        a(href="/") Home
-
-                    //-만약 세션이 없다면 표시                      
-                    //-if !req.session.loggedIn 이거는 정보가 없음 local써야함
-                    if loggedIn 
-                        li
-                            a(href="/videos/upload") Upload Video
-                        li
-                            a(href=`/users/${loggedInUser._id}`) My Profile
-                        li 
-                            a(href="/users/edit") Edit Profile
-                        li 
-                            a(href="/users/logout") Logout
-                        //- li 
-                        //-     a(href="/my-profile") #{loggedInUser.name}
-                    else
-                        li
-                            a(href="/login") Login                
-                        li
-                            a(href="/join") Join
-                                
-                    li
-                        a(href="/search") Search
-                        
-            //- if fakeUser.loggedIn
-            //-     small Hello #{fakeUser.username}
-            //- nav
-
-            //-     ul
-            //-         if fakeUser.loggedIn
-            //-             li 
-            //-                 a(href="/logout") Log out
-            //-         else
-            //-             li 
-            //-                 a(href="/login") Login
-            
+        include partials/header                
         main
             block content
-    include partials/footer
+        include partials/footer
+    script(src="/static/js/main.js")
     block scripts
