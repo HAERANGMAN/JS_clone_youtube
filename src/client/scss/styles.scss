@@ -2,11 +2,23 @@
 @import "./config/_variables.scss";
 @import "./config/_reset.scss";
 
-// Components
 
+// Components
 @import "./components/header.scss";
+@import "./components/footer.scss";
+@import "./components/video.scss";
+@import "./components/shared.scss";
+@import "./components/forms.scss";
+@import "./components/social-login.scss";
+@import "./components/video-player.scss";
+
 
 // Screens
+@import "./screens/home.scss";
+@import "./screens/search.scss";
+@import "./screens/profile.scss";
+@import "./screens/edit-profile.scss";
+
 
 // Defaults
 a {
@@ -14,9 +26,16 @@ a {
   text-decoration: none;
 }
 
+
 body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-          Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-        background-color: $bg;
-        color: white;
-      }
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: $bg;
+  color: white;
+}
+
+
+main {
+  max-width: 1200px;
+  width: 100%;
+}

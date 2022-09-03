@@ -2,27 +2,52 @@ extends base
 
 
 block content
-    //- express.static에 대한 상대경로, 컨트롤러 
-    video(src="/" + video.fileUrl, controls)
-    div
-        button#play Play
-        button#mute Mute
-        span#time 00:00/00:00
-        input(type="range",step="0.01", min="0", max="1")#volume
-    //- div
-    //-     p=video.description
-    //-     small=video.createdAt
-    //- //- h1=video.title
-    //- //- h3 #{video.views} #{video.views === 1 ? "view" : "views"}
-    //- div
-    //-     small Uploaded by 
-    //-         a(href=`/users/${video.owner._id}`)=video.owner.name
-    //-     //- small Uploaded by #{owner.name}
-    //- //-db의 id값과 session의 _id값이 일치하면 보여주기
-    //- if String(video.owner._id) === String(loggedInUser._id)        
-    //-     a(href=`${video.id}/edit`) Edit Video &rarr;
-    //-     br
-    //-     a(href=`${video.id}/delete`) Delete Video &rarr;
+    div#videoContainer(data-id=video._id)
+        video(src="/" + video.fileUrl)
+        div#videoControls.videoControls
+            div.videoControls__play
+                span#play.videoControls__playBtn
+                    i.fas.fa-play
+                div.videoControls__time
+                    span#currenTime 00:00
+                    span  / 
+                    span#totalTime 00:00
+            input(type="range",step="1", value="0", min="0")#timeline.videoControls__timeline
+            div.videoControls__volume
+                input(type="range",step="0.1", value=0.5, min="0", max="1")#volume
+                span#mute
+                    i.fas.fa-volume-up
+            div
+                span#fullScreen
+                    i.fas.fa-expand
+        //- express.static에 대한 상대경로, 컨트롤러(, controls)
+        //- video(src="/" + video.fileUrl)
+        //- div#videoControls
+        //-     button#play Play
+        //-     button#mute Mute
+        //-     input(type="range",step="0.01", min="0", max="1")#volume
+        //-     div
+        //-         span#currenTime 00:00
+        //-         span  / 
+        //-         span#totalTime 00:00
+        //-     div
+        //-         input(type="range",step="1", value="0", min="0")#timeline
+        //-     div
+        //-         button#fullScreen Enter Full Screen
+        //- div
+        //-     p=video.description
+        //-     small=video.createdAt
+        //- //- h1=video.title
+        //- //- h3 #{video.views} #{video.views === 1 ? "view" : "views"}
+        //- div
+        //-     small Uploaded by 
+        //-         a(href=`/users/${video.owner._id}`)=video.owner.name
+        //-     //- small Uploaded by #{owner.name}
+        //- //-db의 id값과 session의 _id값이 일치하면 보여주기
+        //- if String(video.owner._id) === String(loggedInUser._id)        
+        //-     a(href=`${video.id}/edit`) Edit Video &rarr;
+        //-     br
+        //-     a(href=`${video.id}/delete`) Delete Video &rarr;
 
 block scripts
     script(src="/static/js/videoPlayer.js")        

@@ -2,9 +2,17 @@
 //-${}, #{}
 
 mixin video(info)
-    div
-        h4
-            a(href=`/videos/${info.id}`)=info.title
-        p=info.description
-        small=info.createdAt
-        hr
+    a(href=`/videos/${info.id}`).video-mixin
+    div.video-mixin__thumb
+    div.video-mixin__data
+        span.video-mixin__title=info.title
+        div.video-mixin__meta
+            span #{info.owner.name} • 
+            span #{info.meta.views} 회
+
+    //- div
+    //-     h4
+    //-         a(href=`/videos/${info.id}`)=info.title
+    //-     p=info.description
+    //-     small=info.createdAt
+    //-     hr

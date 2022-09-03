@@ -190,7 +190,7 @@ export const search = async (req, res) => {
       title: {
         $regex: new RegExp(`${keyword}`, "i"),
       },
-    });
+    }).populate("owner");
   }
   return res.render("search", { pageTitle: "Search", videos });
 };
@@ -200,3 +200,17 @@ export const search = async (req, res) => {
 // export const see = (req, res) => {
 //   return res.send(`Watch Video #${req.params.id}`);
 // };
+
+
+export const registerView = async (req, res) => {
+  const { id } = req.params;
+  const video = await modelVideo.findById(id);
+  if (!video) {
+    return res.sendStatus(404);
+    // return res.status(404); 이건 .render()를 추가해야됨
+  }
+  video.meta.views = video.meta.views + 1;
+  await video.save();
+  return res.sendStatus(200);
+  // return res.status(200); 한마디로 return이 없는상태라 오류..
+};

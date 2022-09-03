@@ -896,23 +896,69 @@ clean: true
 > 만들어져있는 페이지만큼(pug, html) SCSS에서 screen폴더 및 파일도 작성되어야 함
 
 
+## 동영상 작동 + 경과시간 + 슬라이더 + 풀스크린
+
+> 2개의 함수로 구성(1초간격 / 전체길이)
+> (timeupdate / loadedmetadata) 
+> new Date를 이용해서 새로운 0시 0분 0초를 구성하고 
+> substring(시작,종료인덱스)해서 시 분 초를 이용
+> 1시간 미만일 경우를 위해서
+```bash
+const startIdx = seconds >= 3600 ? 11 : 14;
+```
+`슬라이더`
+> 플레이어 값을 받아와서 input 넣고, input 움직인값을 다시 플레이어로
+
+`풀스크린`
+> div를 전체로 하기, 전체로되어있는것 찾아서 exit하기
+
+
+## 동영상컨트롤러 사라지기(마우스커서)
+`들어올때`
+들어온걸 인식 후 클래스 추가
+`나갈때`
+나간걸 인식 후 클래스 삭제
+`다시 들어올때`
+나간걸 인식을 지우고 초기화해주고 다시 들어온걸 인식후 클래스 추가
+
+1. 마우스를 움직이면 timeout을 취소하고 시작하고, 멈추면 
+2. timeout을 시작하고 class를 없앤다.
+3. 마우스를계속 움직이면 timeout은 시작만 되고 완료되지 않는다.
+
+4. 마우스를 움직이게 되면 기존 setTimeout이 clearTimeout에 의해 지워지고, 새로운 setTimeout이 생성되고, 실행되게 된다.
+5. 그 상태에서 마우스를 움직이지 않으면 새로운 setTimeout이 3초 후에 실행되게 되서 비디오 컨트롤바를 숨긴다.
+6. 움직이게 되면 다시 위의 1번처럼 기존 setTimeout은 clearTimeout에 의해 지워지고, 새로운 setTimeout이 생성된다.
+
+```bash
+const handleMouseMove = () => {
+if (controlsTimeout) {
+clearTimeout(controlsTimeout);
+controlsTimeout = null;
+}
+videoControls.classList.add("showing");
+controlsTimeout = setTimeout(() => {
+videoControls.classList.remove("showing");
+}, 3000);
+};
+```
+
+## API란?
+> 백엔드와 프론트엔드가 서버를 통해 통신하는 방법
+> 현재는 백엔드에서 pug로 렌더링하고있는 특이한 구조임
+> 원래는 백엔드는 인증, db관련만하고 프론트엔더에서 렌더함
+`interactive`
+url이 바뀌지 않고도 함수가 수행되는 것
+`data-attribute`
+html에 백엔드 정보를 저장해서 interactive에 이용
 
 ####################################################################
+~11강 숙제
+1. 컨트롤러 말고 화면을 클릭해도 play stop 되어야함
+2. 컨트롤바 위에 있을때에는 video leave상태인데 컨트롤바 위에 있을때도 계쏙 있을수 있도록(비디오가아닌 div로 바꾸면됨)
+3. 스페이스로 작동유뮤 확인 
 
-10.2 
-https://github.com/nomadcoders/wetube-reloaded/commit/37bec52bc3552170d0cd019ae822dc45d10f8776
-
-10.3
-https://github.com/nomadcoders/wetube-reloaded/commit/8129270d7c2b58ca69cc7dccb6db8dee154aadb8
-
-변경사항 모두 적용해야함
-
-
-10강 완강후
-https://github.com/nomadcoders/wetube-reloaded/commit/0b4120e31cd2111e0fdff7449ba78ec2dbb45fdb
-에서 `forms.scss` 꼭 변경해야함
-
-####################################################################
+https://nomadcoders.co/wetube/lectures/2765
+댓글의 수강생 깃허브에서 확인해보자
 
 
 request, response, template, controller, router

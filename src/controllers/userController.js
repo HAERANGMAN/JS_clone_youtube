@@ -246,7 +246,13 @@ export const seeProfile = async (req, res) => {
   //url에서 id값 가져오기
   const { id } = req.params;
   // const user = await modelUser.findById(id);
-  const user = await modelUser.findById(id).populate("videos");
+  const user = await modelUser.findById(id).populate({
+    path: "videos",
+    populate: {
+      path: "owner",
+      model: "User",
+    },
+  });
   //populate를 통해서 videos를 가져옴
   if (!user) {
     return res.status(404).render("404", { pageTitle: "User not found." });
@@ -258,6 +264,12 @@ export const seeProfile = async (req, res) => {
     user,
     // videos, //user안에 videos라는 []가 있으므로 개별 선언안함
   });
+  ///////////////////////////////////////////////////////////////////////////////////
+  // 10.2에서 니꼬가 한것과 내가 다름... 확인필요
+  // return res.render("users/profile", {
+  //   pageTitle: user.name,
+  //   user,
+  // });
 };
 
 

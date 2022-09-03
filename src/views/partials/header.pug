@@ -1,9 +1,12 @@
 header 
-    a(href="/")
+    a(href="/").header__logo
         i.fab.fa-youtube 
     h1=pageTitle
     nav
         ul  
+            li
+                a(href="/search")
+                    i.fas.fa-search
             //- li  //-youtube 로고로 대체함
             //-     a(href="/") Home
 
@@ -12,22 +15,28 @@ header
             if loggedIn 
                 li
                     a(href="/videos/upload") Upload Video
-                li
-                    a(href=`/users/${loggedInUser._id}`) My Profile
+                //- li
+                //-     a(href=`/users/${loggedInUser._id}`) My Profile
                 li 
                     a(href="/users/edit") Edit Profile
                 li 
                     a(href="/users/logout") Logout
                 //- li 
                 //-     a(href="/my-profile") #{loggedInUser.name}
+                li
+                    a(href=`/users/${loggedInUser._id}`)
+                        if loggedInUser.avatarUrl === ""
+                            span 😀
+                        else
+                            img.header__avatar(src="/" + loggedInUser.avatarUrl)
             else
                 li
                     a(href="/login") Login                
                 li
-                    a(href="/join") Join
-                        
-            li
-                a(href="/search") Search
+                    a(href="/join").header__btn Join
+                
+            //- li
+            //-     a(href="/search") Search
                 
     //- if fakeUser.loggedIn
     //-     small Hello #{fakeUser.username}
