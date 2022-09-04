@@ -1,4 +1,4 @@
-//- extends base.pug
+extends base.pug
 include mixins/video
 
 block content
@@ -10,6 +10,6 @@ block content
     div.video-grid
         each i in videos 
             +video(i)
-         else
+        else
             span.empty__message No videos found
             

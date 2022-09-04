@@ -950,6 +950,38 @@ videoControls.classList.remove("showing");
 url이 바뀌지 않고도 함수가 수행되는 것
 `data-attribute`
 html에 백엔드 정보를 저장해서 interactive에 이용
+프론트-백에서 정보를 공유하는 방법
+
+## 프론트엔드에서 async, await 쓰려면
+`regenerator-runtime` 설치할것
+npm i regenerator-runtime
+
+
+## 화면 녹화
+> recorder.js 참고
+
+
+## 자바스크립트는 함수간 참조가 불가능함
+> 변수를 미리 선언해준후 함수안에서 쓴 변수를 인용
+> P를 사용하기 위해서
+
+```
+const P;
+> func A
+>   P = asd
+
+> func B
+>   asd(P)
+```
+
+## recorder
+
+1. init()으로 자동시작, stream으로 저장 + play로 보여주기
+2. 이벤트리스너 old지우고 add 
+3. let을 통해서 전역 함수안에서 공유함
+4. 가상의 url을 통해 브라우저의 메모리에 접근함
+5. 가상의 앵커를 통해서 영상저장
+
 
 ####################################################################
 ~11강 숙제
@@ -957,8 +989,19 @@ html에 백엔드 정보를 저장해서 interactive에 이용
 2. 컨트롤바 위에 있을때에는 video leave상태인데 컨트롤바 위에 있을때도 계쏙 있을수 있도록(비디오가아닌 div로 바꾸면됨)
 3. 스페이스로 작동유뮤 확인 
 
+
 https://nomadcoders.co/wetube/lectures/2765
 댓글의 수강생 깃허브에서 확인해보자
+
+
+13.5다시 들을것
+
+#######################################################
+
+
+
+
+
 
 
 request, response, template, controller, router
