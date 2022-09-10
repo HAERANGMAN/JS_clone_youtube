@@ -974,13 +974,41 @@ const P;
 >   asd(P)
 ```
 
-## recorder
+## recorder-recap
 
 1. init()으로 자동시작, stream으로 저장 + play로 보여주기
 2. 이벤트리스너 old지우고 add 
 3. let을 통해서 전역 함수안에서 공유함
 4. 가상의 url을 통해 브라우저의 메모리에 접근함
 5. 가상의 앵커를 통해서 영상저장
+
+
+## FFmpeg
+> 비디오 오디오 다루기 추출, 썸네일, 화질변경, 자막 등
+> 서버에서 작업하기에는(백엔드에서는) 너무비쌈
+> 그래서 브라우저에서 WebAssembly를 통해서 처리함
+> 설치 : npm i @ffmpeg/ffmpeg @ffmpeg/core
+> 1. 실행시 로딩이 오래걸릴 수 있기때문에(컴 사양에 따라서) await걸어줌
+> 2. 가성의 파일 writeFile 생성, wjwkdaud, fetchFile(위치)
+> 3. run후 -i(인코딩), 파일명, 60프레임, 출력파일
+```bash
+const handleDownload = async () => {
+  const ffmpeg = createFFmpeg({ log: true });
+  await ffmpeg.load();
+
+  ffmpeg.FS("writeFile", "recording.webm", await fetchFile(videoFile));
+  //videoFile = blob
+
+  await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4");
+```
+
+
+## WebAssembly
+> go, Rust등 빠른 코드들을 브라우저에서 사용가능함
+> 
+
+
+
 
 
 ####################################################################
@@ -992,10 +1020,6 @@ const P;
 
 https://nomadcoders.co/wetube/lectures/2765
 댓글의 수강생 깃허브에서 확인해보자
-
-
-13.5다시 들을것
-
 #######################################################
 
 

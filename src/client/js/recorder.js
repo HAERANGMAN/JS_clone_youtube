@@ -1,3 +1,6 @@
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
+
+
 const startBtn = document.getElementById("startBtn");
 const video = document.getElementById("preview");
 
@@ -11,12 +14,20 @@ let recorder;
 let videoFile;
 
 
-const handleDownload = () => {
+//가상으로 만들어서 클릭해주고 진행되게함
+const handleDownload = async () => {
+  const ffmpeg = createFFmpeg({ log: true });
+  await ffmpeg.load();
+
+  ffmpeg.FS("writeFile", "recording.webm", await fetchFile(videoFile));
+
+  await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4");
+
   const a = document.createElement("a");
   a.href = videoFile;
   a.download = "MyRecording.webm";
   document.body.appendChild(a);
-  a.click();
+  a.click(); //유저가아닌 직접클릭해서 실행
 };
 
 
@@ -34,7 +45,7 @@ const handleStart = () => {
   startBtn.addEventListener("click", handleStop);
   recorder = new MediaRecorder(stream, { mimeType: "video/webm" });
   recorder.ondataavailable = (event) => {
-    videoFile = URL.createObjectURL(event.data);
+    videoFile = URL.createObjectURL(event.data); //브라우저에 데이터가 있는곳
     video.srcObject = null;
     video.src = videoFile;
     video.loop = true;

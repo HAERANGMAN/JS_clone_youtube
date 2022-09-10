@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/HAERANGMAN/JS_clone_youtube#readme",
   "dependencies": {
+    "@ffmpeg/core": "^0.11.0",
+    "@ffmpeg/ffmpeg": "^0.11.4",
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.6.0",
     "dotenv": "^16.0.1",
