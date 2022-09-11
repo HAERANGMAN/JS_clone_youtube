@@ -1055,8 +1055,8 @@ body
 > 몽구스 컨트롤러 라우트 스타투스코드 파퓰레이트 몽구스릴레이션십
 
 1. 댓글관련 DB몽구스 Schema만들기
-2. commentSection.js
-
+2. pug에 commentSection.js넣어서 html구성
+3. 비디오의 dataset.id를 가져와서 db를 사용
 
 
 

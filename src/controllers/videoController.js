@@ -218,3 +218,15 @@ export const registerView = async (req, res) => {
   return res.sendStatus(200);
   // return res.status(200); 한마디로 return이 없는상태라 오류..
 };
+
+
+export const createComment = (req, res) => {
+  console.log(req.params);
+  console.log(req.body);
+  console.log(req.body.text, req.body.rating); //넘어온 json.key
+  return res.end();
+};
+
+
+
+

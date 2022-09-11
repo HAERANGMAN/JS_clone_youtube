@@ -26,6 +26,7 @@ app.set("view engine", "pug"); //pug추가
 app.set("views", process.cwd() + "/src/views"); //pug의 상대경로 재입력
 app.use(logger);
 app.use(express.urlencoded({ extended: true })); //body를 가져오는기위해 미들웨어로 사용
+app.use(express.json()); // text - json - {키:밸류} 변환
 
 // 세션,쿠키
 app.use(session({
