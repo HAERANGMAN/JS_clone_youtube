@@ -1184,10 +1184,10 @@ build:sever는 src 폴더 안에 있는 파일들을 컴파일 해서 build 폴�
 build:assets와 dev:assets는 둘다 webpack을 실행시키는데 dev:assets와 dev:assets가 다른 점은 build:assets는 production모드로 실행해서 코드를 압축시킨다. dev:assets는 develop 모드로 실행한다. 둘다 assets에 파일을 저장한다.
 ```
 
-
 변수추가해주기
 
-mongodb+srv://abcrang:<password>@cluster0.ulzwlnc.mongodb.net/?retryWrites=true&w=majority
+mongodb+srv://abcrang:6SCxNAcgBFRQ2bMt@cluster0.ulzwlnc.mongodb.net/?retryWrites=true&w=majority
+
 
 몽구스 컨트롤러 라우트 스타투스코드 파퓰레이트 몽구스릴레이션십
 
