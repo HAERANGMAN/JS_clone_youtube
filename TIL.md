@@ -1152,6 +1152,40 @@ https://nomadcoders.co/wetube/lectures/2765
 ```
 
 
+## package.json
+```bash
+//webpack.config.js
+
+mode: "development", //개발용(개발용은 무컵고 크다)
+watch: true, //업데이트 실시간 확인
+
+//package.json
+"scripts":{
+  "start": "node build/init.js",
+  "build": "npm run build:server && npm run build:assets",
+  "build:server": "babel src -d build",
+  "build:assets": "webpack --mode=production",
+  "dev:server": "nodemon",
+  "dev:assets": "webpack --mode=development -w"
+  // "win": "node index.js",
+  // "back": "nodemon",
+  // "front": "webpack"
+}
+```
+```bash
+명령어 부분을 살펴보면 start, build, dev로 나눌 수 있다.
+
+start는 말 그대로 build/init.js를 시작하는 것인데 서버를 시작하는 것이라고 볼 수 있다. 이것은 dev:sever와 같은 역할을 한다. dev:sever는 nodemon을 실행하는데 nodemon을 보게 되면 babel-node로 src/init.js를 실행한다.
+start와 dev:sever가 다른 점은 strat는 babel이 없이 init.js를 시작하는데, 이유는 babel이 필요없기 때문이다. build 파일에는 이미 컴파일 된 코드들만 있기 때문이다.
+
+다음에 build 부분을 살펴보면 그냥 build 명령어는 build:sever와 build:assets를 포함한다.
+build:sever는 src 폴더 안에 있는 파일들을 컴파일 해서 build 폴더에 저장한다.
+
+build:assets와 dev:assets는 둘다 webpack을 실행시키는데 dev:assets와 dev:assets가 다른 점은 build:assets는 production모드로 실행해서 코드를 압축시킨다. dev:assets는 develop 모드로 실행한다. 둘다 assets에 파일을 저장한다.
+```
+
+
+
 몽구스 컨트롤러 라우트 스타투스코드 파퓰레이트 몽구스릴레이션십
 
 
