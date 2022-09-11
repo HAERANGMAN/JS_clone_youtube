@@ -1,3 +1,5 @@
+// user.js(파일명)과 export.User(dbname)을 구분하기위해서 대소문자 구분함
+
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 
@@ -10,6 +12,7 @@ const userSchema = new mongoose.Schema({
   avatarUrl: String, //위아래 동일함
   socialOnly: { type: Boolean, default: false },
   name: { type: String, required: true },
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }], //댓글리스트들, ref는 여기에서가져옴 => mongoose.model(여기, db정의)
   videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }], //유저의 비디오 리스트 중 _id를 가져옴
 });
 

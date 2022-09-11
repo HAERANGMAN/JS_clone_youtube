@@ -20,6 +20,18 @@ block content
             div
                 span#fullScreen
                     i.fas.fa-expand
+
+    div.video__data
+        p.video__title=video.title
+        small.video__owner Uploaded by 
+            a(href=`/users/${video.owner._id}`)=video.owner.name
+        small.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
+
+        if String(video.owner._id) === String(loggedInUser._id)        
+            a(href=`${video.id}/edit`) Edit Video &rarr;
+            br
+            a(href=`${video.id}/delete`) Delete Video &rarr;
+
         //- express.static에 대한 상대경로, 컨트롤러(, controls)
         //- video(src="/" + video.fileUrl)
         //- div#videoControls
@@ -43,11 +55,8 @@ block content
         //-     small Uploaded by 
         //-         a(href=`/users/${video.owner._id}`)=video.owner.name
         //-     //- small Uploaded by #{owner.name}
-        //- //-db의 id값과 session의 _id값이 일치하면 보여주기
-        //- if String(video.owner._id) === String(loggedInUser._id)        
-        //-     a(href=`${video.id}/edit`) Edit Video &rarr;
-        //-     br
-        //-     a(href=`${video.id}/delete`) Delete Video &rarr;
+        //-db의 id값과 session의 _id값이 일치하면 보여주기
+
 
 block scripts
     script(src="/static/js/videoPlayer.js")        

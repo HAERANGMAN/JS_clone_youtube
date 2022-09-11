@@ -1,3 +1,5 @@
+// video.js(파일명)과 export.Video(dbname)을 구분하기위해서 대소문자 구분함
+
 // 데이터의 정규화를 위해 생성해주는 것
 
 import mongoose from "mongoose";
