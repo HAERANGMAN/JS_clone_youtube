@@ -20,8 +20,12 @@ https://babeljs.io/setup에서 설치
 Utilities: Nodemon, Language APIs: Node클릭후 설치
 ```
 
+## barbel
+
 `npm install @babel/core @babel/node --save-dev (or -D라고쳐도됨)`
 
+> 바벨은 개발용임 실제 서버를 위해서는 babel cli가 필요함
+> 
 - 위를 입력하여 바벨에서 nodemon, node 설치
 - 바벨 작동을 위한 스크립트도 패키지에 넣음
 - 바벨노드로 index.js를 변환
@@ -1057,6 +1061,67 @@ body
 1. 댓글관련 DB몽구스 Schema만들기
 2. pug에 commentSection.js넣어서 html구성
 3. 비디오의 dataset.id를 가져와서 db를 사용
+4. 댓글내용을 tringfy사용해서 text를 보내야함 object아니고(front->backend로 보내는 과정)
+5. 백에서는 text를 받아서 json으로 바꿔야함(키,밸류로) 그것은 미들웨어에서 해줌
+6. 바뀐db로 화면을 새로고침하면 과부하 생기니 가짜 댓글업데이트를 해줌 16.7강
+7. 가짜버튼을 만들면서 back.json을 가져와서 data-id를 넣어줌(새로고침없이)
+
+`작동순서`
+- text여부 확인
+ data-id로 url만들고 api로 json을 주고받음
+- 201이면 댓글지움(됐기때문에)
+- 가상 댓글의 id도 같이 보내줌
+- 
+
+
+
+## populating
+> 다중 경로 populating하기 (Populating Multiple Paths)
+> (비디오 안에 댓글 안에 유저 또는 비디오를 찾을 때 사용 가능)
+```bash
+// 방법1: populate를 배열로 감싸고 그 안에 컬렉션을 전달
+Manager.find()
+.populate({
+path : 'users',
+populate: [
+{ path: 'cars' },
+{ path: 'houses' }
+]
+});
+
+// 방법2: 공백으로 구분된 컬렉션 문자열을 전달
+Manager.find()
+.populate({
+path : 'users',
+populate: 'cars houses'
+});
+```
+
+유저가 작성한 댓글 DB에 저장하기
+```
+const foundUser = await User.findById({ _id: loggedInUser._id }).populate("comments");
+
+if (!foundUser) {
+return res.sendStatus(404);
+}
+
+const createdComment = await Comment.create({ owner: loggedInUser._id, video: id, text });
+foundUser.comments.push(createdComment);
+foundUser.save();
+```
+
+##########################################################
+숙제
+
+## delete comment
+> 1. x버튼 만들기
+> 2. fetch request보내서 댓글지우기
+> 3. 그러기 위해서 API route와 controller만들기
+> 4. 주인확인, 모두에게 보이면 안됨(watch.pug에서 delete처럼)
+> 5. fetch 메소드는 delete로
+
+
+videoPlayer.js 의 handleEnded와 같은 메소드
 
 
 

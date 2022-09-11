@@ -33,10 +33,22 @@ block content
             a(href=`${video.id}/delete`) Delete Video &rarr;
 
     if loggedIn
-        div.video__comments
+        div.video__add-comments
             form.video__comment-form#commentForm
                 textarea(cols="30", rows="10", placeholder="Write a nice commment...")
                 button Add Comment
+                
+    div.video__comments
+        ul
+            each comment in video.comments.reverse()
+                li.video__comment(data-id=comment.id)
+                    i.fas.fa-comment
+                    span #{comment.text}
+                    if String(video.owner._id) === String(loggedInUser._id)
+                        span ❌
+
+        //-reverse는 내림차순정렬
+        
         //- express.static에 대한 상대경로, 컨트롤러(, controls)
         //- video(src="/" + video.fileUrl)
         //- div#videoControls
@@ -65,5 +77,6 @@ block content
 
 block scripts
     script(src="/static/js/videoPlayer.js")    
-    if loggedIn //-상시실행 안되게 하기위해서...
+    if loggedIn 
         script(src="/static/js/commentSection.js")    
+    //-상시실행 안되게 하기위해서...

@@ -45,8 +45,10 @@ export const watch = async (req, res) => {
   // const video = videos[id - 1]; //인덱스=id-1
   // const video = await modelVideo.findById(id);
   // const owner = await modelUser.findById(video.owner); //비디오에서 찾은 owner값(ID)를 modelUser에서 찾는 과정임 그것을 render로 보내줌
-  const video = await modelVideo.findById(id).populate("owner");
+  const video = await modelVideo.findById(id).populate("owner").populate("comments");
+  // console.log(video);
   // populate를 통해서 modelVideo.owner에 {"User"데이터}를 역참조해줌 
+  // modelVideo.comments에도 마찬가지
   if (!video) {
     return res.render("404", { pageTitle: "Video not found." });
   }
@@ -236,8 +238,14 @@ export const createComment = async (req, res) => {
     owner: user._id,
     video: id,
   });
-  return res.sendStatus(201);
+  video.comments.push(comment._id);
+  video.save(); //새로운것을 저장해야하니까...
+  return res.status(201).json({ newCommentId: comment._id });
 };
+
+
+// export const deleteComment = 
+// 본인확인 후 일치하면 삭제
 
 
 

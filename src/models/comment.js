@@ -1,4 +1,4 @@
-// comment.js(파일명)과 export.Comment(dbname)을 구분하기위해서 대소문자 구분함
+// // comment.js(파일명)과 export.Comment(dbname)을 구분하기위해서 대소문자 구분함
 
 import mongoose from "mongoose";
 
