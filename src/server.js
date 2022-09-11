@@ -2,6 +2,7 @@ import morgan from "morgan";
 import express from "express";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import flash from "express-flash";
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
@@ -48,6 +49,13 @@ app.use(session({
 //         return res.send(`${req.session.id} ${req.session.potato}`);
 // });
 
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  next();
+});
+
+app.use(flash());
 app.use(localsMiddleware) //위에서 썼던 세션관련한것을 여기서 활용
 // 미들웨어는 router전까지써야함
 //////////////////////////////////////////////////////////////////////

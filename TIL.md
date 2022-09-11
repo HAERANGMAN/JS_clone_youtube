@@ -989,25 +989,67 @@ const P;
 > 그래서 브라우저에서 WebAssembly를 통해서 처리함
 > 설치 : npm i @ffmpeg/ffmpeg @ffmpeg/core
 > 1. 실행시 로딩이 오래걸릴 수 있기때문에(컴 사양에 따라서) await걸어줌
-> 2. 가성의 파일 writeFile 생성, wjwkdaud, fetchFile(위치)
+> 2. 가성의 파일 writeFile 생성, 저장명, fetchFile(위치)
 > 3. run후 -i(인코딩), 파일명, 60프레임, 출력파일
+>
 ```bash
 const handleDownload = async () => {
   const ffmpeg = createFFmpeg({ log: true });
   await ffmpeg.load();
 
   ffmpeg.FS("writeFile", "recording.webm", await fetchFile(videoFile));
-  //videoFile = blob
+  //videoFile = blob(JS에서 file을 지칭)
 
   await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4");
-```
+  //인코딩후
 
+  const mp4File = ffmpeg.FS("readFile", "output.mp4");
+  //파일로 
+
+  const mp4Blob = new Blob([mp4File.buffer], { type: "video/mp4" });
+
+  const mp4Url = URL.createObjectURL(mp4Blob);
+```
+`버전오류시`
+```bash
+// server.js
+app.use((req, res, next) => {
+res.header("Cross-Origin-Embedder-Policy", "require-corp");
+res.header("Cross-Origin-Opener-Policy", "same-origin");
+next();
+});
+```
 
 ## WebAssembly
 > go, Rust등 빠른 코드들을 브라우저에서 사용가능함
-> 
 
 
+## 썸네일 업로드
+> multer(middleware.js)를 이용해서 업로드
+> videoRouter.js에서 videoUpload.single("video")을 fields로 변경(다중전송위해)
+
+
+## Express Flash
+> 1. req.flash('변수명', '메시지내용')를 사용할수 있게함
+> 2. locals.messages를 만들어서 pug에서 messages를 사용
+> Express 애플리케이션용 플래시 메시지> 
+> 플래시는 플래시 메시지를 정의하고 요청을 리디렉션하지 않고 렌더링할 수 있는 기능이 있는 connect-flash의 확장입니다.
+> npm i express-flash
+`사용 예시`
+```bash
+//middlewares
+app.get('/', function (req, res) {
+req.flash('info', 'Welcome');
+res.render('index', {
+title: 'Home'
+})
+});
+
+//pug
+body
+  if messages.info
+    +message("info", messages.info)
+```
 
 
 
@@ -1025,7 +1067,7 @@ https://nomadcoders.co/wetube/lectures/2765
 
 
 
-
+몽구스 컨트롤러 라우트 스타투스코드 파퓰레이트 몽구스릴레이션십
 
 
 request, response, template, controller, router

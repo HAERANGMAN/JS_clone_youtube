@@ -17,7 +17,7 @@ videoRouter.route("/:id([0-9a-f]{24})/delete").all(protectorMiddleware).get(dele
 
 
 videoRouter.get("/upload", protectorMiddleware, getUpload); //한줄로도 가능함!
-videoRouter.post("/upload", protectorMiddleware, videoUpload.single("video"), postUpload);
+videoRouter.post(videoUpload.fields([{ name: "video" }, { name: "thumb" }]), postUpload);
 
 
 videoRouter.get("/:id(\\d+)/delete", deleteVideo);
