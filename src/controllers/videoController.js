@@ -20,6 +20,7 @@
 
 import modelVideo from "../models/video";
 import modelUser from "../models/user";
+import modelComment from "../models/comment";
 
 ///////////////////////////////////////////////////////////////
 // callback 방식
@@ -220,13 +221,23 @@ export const registerView = async (req, res) => {
 };
 
 
-export const createComment = (req, res) => {
-  console.log(req.params);
-  console.log(req.body);
-  console.log(req.body.text, req.body.rating); //넘어온 json.key
-  return res.end();
+export const createComment = async (req, res) => {
+  const {
+    session: { user },
+    body: { text }, //넘어온 json.key
+    params: { id },
+  } = req;
+  const video = await modelVideo.findById(id);
+  if (!video) {
+    return res.sendStatus(404);
+  }
+  const comment = await modelComment.create({
+    text,
+    owner: user._id,
+    video: id,
+  });
+  return res.sendStatus(201);
 };
-
 
 
 

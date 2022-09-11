@@ -21,6 +21,7 @@ const handleSubmit = (event) => {
     },
     body: JSON.stringify({ text }),
   });
+  textarea.value = ""; //submit후 댓글내역 초기화
 };
 
 if (form) {
