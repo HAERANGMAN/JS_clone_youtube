@@ -7,6 +7,7 @@ mongoose.connect(process.env.DB_URL, {
   // useCreateIndex: true,
 });
 
+
 const db = mongoose.connection;
 
 const handleOpen = () => console.log("✅ Connected to DB");
