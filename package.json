@@ -7,6 +7,8 @@
     "url": "git+https://github.com/HAERANGMAN/JS_clone_youtube.git"
   },
   "scripts": {
+    "start": "node build/init.js",
+    "build:server": "babel src -d build",
     "win": "node index.js",
     "back": "nodemon",
     "front": "webpack"

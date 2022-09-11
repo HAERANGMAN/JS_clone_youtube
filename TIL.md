@@ -24,8 +24,8 @@ Utilities: Nodemon, Language APIs: Node클릭후 설치
 
 `npm install @babel/core @babel/node --save-dev (or -D라고쳐도됨)`
 
-> 바벨은 개발용임 실제 서버를 위해서는 babel cli가 필요함
-> 
+> babel-node는 개발용이고 느림 실제 서버를 위해서는 babel cli가 필요함
+
 - 위를 입력하여 바벨에서 nodemon, node 설치
 - 바벨 작동을 위한 스크립트도 패키지에 넣음
 - 바벨노드로 index.js를 변환
@@ -1139,6 +1139,17 @@ https://nomadcoders.co/wetube/lectures/2765
 #######################################################
 
 
+## 최종단계에서의 babel
+> babel-node는 개발용이고 느림 실제 서버를 위해서는 babel cli가 필요함
+> npm install --save-dev @babel/cli
+> 퍼그는 옮겨지지 않음
+```bash
+//package.json
+  "scripts": {
+    "start": "node build/init.js", //oldJS라서 바로 node인식가능...
+    "build:server": "babel src -d build", //build -directory에 src를 old JS로 변환
+  }
+```
 
 
 몽구스 컨트롤러 라우트 스타투스코드 파퓰레이트 몽구스릴레이션십
