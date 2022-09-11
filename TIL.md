@@ -1185,6 +1185,9 @@ build:assets와 dev:assets는 둘다 webpack을 실행시키는데 dev:assets와
 ```
 
 
+변수추가해주기
+
+mongodb+srv://abcrang:<password>@cluster0.ulzwlnc.mongodb.net/?retryWrites=true&w=majority
 
 몽구스 컨트롤러 라우트 스타투스코드 파퓰레이트 몽구스릴레이션십
 
